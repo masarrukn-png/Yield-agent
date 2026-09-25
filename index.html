@@ -1,0 +1,920 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Dubai Yield Agent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --ground:#EEF2F7; --panel:#FFFFFF; --ink:#0F1B2B; --muted:#57657A; --faint:#8793A5; --line:#DAE1EB; --soft:#F4F7FB;
+  --band:#0B1D33; --band2:#133257; --band-ink:#EAF1FA; --band-muted:#9CB1CB; --band-line:#223F63; --hero-em:#6FB6FF;
+  --accent:#1D5FD1; --accent-ink:#FFFFFF; --accent-soft:#E0EAFB; --brass:#1D5FD1; --brass-soft:#E0EAFB;
+  --good:#1C7A4C; --good-soft:#DDF1E5; --mid:#946300; --mid-soft:#F7ECD3; --bad:#AE3D30; --bad-soft:#F8E3DF;
+  --s1:#2A6FD6; --s2:#E0662F; --s3:#179E73; --s4:#C98F00;
+  --display:"Bricolage Grotesque","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  --body:"IBM Plex Sans","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --shadow:0 1px 2px rgba(13,43,46,.06),0 8px 24px -12px rgba(13,43,46,.18);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ color-scheme:dark;
+    --ground:#0A111B; --panel:#101A28; --ink:#E4ECF6; --muted:#93A2B6; --faint:#6A788C; --line:#1F2C3E; --soft:#132032;
+    --band:#07121F; --band2:#0E2340; --band-ink:#E4ECF6; --band-muted:#8FA5C0; --band-line:#1B3354; --hero-em:#7CBEFF;
+    --accent:#6FA8FF; --accent-ink:#06142A; --accent-soft:#15294A; --brass:#7CB4FF; --brass-soft:#15294A;
+    --good:#5CC990; --good-soft:#12301F; --mid:#E2AE4A; --mid-soft:#342710; --bad:#EE8373; --bad-soft:#3A1C18;
+    --s1:#5B97F0; --s2:#F08452; --s3:#35C194; --s4:#E6B33A; --shadow:0 1px 2px rgba(0,0,0,.4); }
+}
+:root[data-theme="dark"]{ color-scheme:dark;
+  --ground:#0A111B; --panel:#101A28; --ink:#E4ECF6; --muted:#93A2B6; --faint:#6A788C; --line:#1F2C3E; --soft:#132032;
+  --band:#07121F; --band2:#0E2340; --band-ink:#E4ECF6; --band-muted:#8FA5C0; --band-line:#1B3354; --hero-em:#7CBEFF;
+  --accent:#6FA8FF; --accent-ink:#06142A; --accent-soft:#15294A; --brass:#7CB4FF; --brass-soft:#15294A;
+  --good:#5CC990; --good-soft:#12301F; --mid:#E2AE4A; --mid-soft:#342710; --bad:#EE8373; --bad-soft:#3A1C18;
+  --s1:#5B97F0; --s2:#F08452; --s3:#35C194; --s4:#E6B33A; --shadow:0 1px 2px rgba(0,0,0,.4); }
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--ground); color:var(--ink); font-family:var(--body); font-size:15px; line-height:1.5; margin:0}
+button,input{font:inherit; color:inherit}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:6px}
+.num,.mono{font-family:var(--mono); font-variant-numeric:tabular-nums; letter-spacing:-.01em}
+
+/* header band */
+.band{background:radial-gradient(1200px 400px at 85% -20%, var(--band2), transparent 60%), var(--band); color:var(--band-ink); padding-inline:16px; padding-block:22px 0; position:relative; overflow:hidden}
+.band::before{content:""; position:absolute; inset:0; background-image:linear-gradient(var(--band-line) 1px, transparent 1px),linear-gradient(90deg,var(--band-line) 1px, transparent 1px); background-size:44px 44px; opacity:.35; mask-image:linear-gradient(180deg,#000 0%,transparent 85%); -webkit-mask-image:linear-gradient(180deg,#000 0%,transparent 85%); pointer-events:none}
+.inner{max-width:1080px; margin-inline:auto; position:relative}
+.topline{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap}
+.logo{display:flex; align-items:center; gap:10px; font-family:var(--display); font-weight:700; font-size:17px; letter-spacing:-.01em}
+.logo svg{flex:none}
+.stamp{font-family:var(--mono); font-size:11.5px; color:var(--band-muted); letter-spacing:.04em; text-transform:uppercase}
+.lang{display:inline-flex; border:1px solid var(--band-line); border-radius:999px; padding:3px; background:rgba(255,255,255,.03)}
+.lang button{border:0; background:transparent; color:var(--band-muted); padding:5px 12px; border-radius:999px; cursor:pointer; font-size:13px; font-weight:500}
+.lang button[aria-pressed="true"]{background:var(--band-ink); color:var(--band)}
+.hero{padding-block:30px 22px; display:grid; gap:18px}
+.hero h1{font-family:var(--display); font-weight:800; font-size:clamp(28px,5vw,46px); line-height:1.04; letter-spacing:-.025em; margin:0; max-width:18ch; text-wrap:balance}
+.hero h1 em{font-style:normal; color:var(--hero-em)}
+.ask form{display:flex; gap:8px; background:var(--panel); border-radius:14px; padding:6px; box-shadow:0 10px 30px -12px rgba(0,0,0,.5)}
+.ask input{flex:1; min-width:0; border:0; background:transparent; padding:10px 12px; font-size:15.5px; color:var(--ink)}
+.ask input::placeholder{color:var(--faint)}
+.ask input:focus{outline:none}
+.btn{border:0; background:var(--accent); color:var(--accent-ink); font-weight:600; border-radius:10px; padding:0 20px; cursor:pointer; white-space:nowrap}
+.btn:disabled{opacity:.6; cursor:progress}
+.tabs{display:flex; gap:4px; margin-top:6px; overflow-x:auto; scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{border:0; background:transparent; color:var(--band-muted); padding:12px 16px 14px; cursor:pointer; font-weight:600; font-size:14.5px; border-radius:10px 10px 0 0; display:flex; align-items:center; gap:8px; white-space:nowrap}
+.tab .ct{font-family:var(--mono); font-size:11.5px; padding:1px 7px; border-radius:999px; background:rgba(255,255,255,.08)}
+.tab[aria-selected="true"]{background:var(--ground); color:var(--ink)}
+.tab[aria-selected="true"] .ct{background:var(--accent-soft); color:var(--accent)}
+
+/* main */
+main{padding-inline:16px; padding-block:26px 64px}
+.view{max-width:1080px; margin-inline:auto; display:flex; flex-direction:column; gap:18px}
+.head{display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap}
+.head h2{font-family:var(--display); font-weight:700; font-size:clamp(22px,3.2vw,30px); letter-spacing:-.02em; line-height:1.12; margin:0; text-wrap:balance}
+.head .sub{color:var(--muted); font-size:13.5px; margin-top:4px}
+.note{background:var(--mid-soft); color:var(--mid); border-radius:10px; padding:8px 12px; font-size:13.5px}
+
+.controls{display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center}
+.ctl{display:flex; align-items:center; gap:8px}
+.lab{font-size:11.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); font-weight:600}
+.seg{display:inline-flex; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:3px; gap:2px}
+.seg button{border:0; background:transparent; padding:6px 11px; border-radius:7px; cursor:pointer; font-size:13.5px; color:var(--muted); font-weight:500; white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--ink); color:var(--panel)}
+.pillbtn{border:1px dashed var(--line); background:transparent; border-radius:999px; padding:5px 12px; font-size:13px; color:var(--muted); cursor:pointer}
+.pillbtn:hover{color:var(--ink); border-color:var(--muted)}
+.pillbtn b{color:var(--ink); font-weight:600}
+
+/* ranked list */
+.list{background:var(--panel); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); overflow:hidden}
+.lh,.lr{display:grid; grid-template-columns:44px minmax(0,1.6fr) minmax(0,1.3fr) minmax(0,1.9fr) 88px; gap:14px; align-items:center; padding:14px 18px}
+.lh{background:var(--soft); font-size:11.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); font-weight:600; padding-block:10px}
+.lr{border-top:1px solid var(--line); transition:background .15s}
+.lr:hover{background:var(--soft)}
+.lr.focus{box-shadow:inset 3px 0 0 var(--brass)}
+.rk{font-family:var(--mono); color:var(--faint); font-size:13px}
+.lr:first-of-type .rk{color:var(--brass); font-weight:600}
+.nm b{display:block; font-weight:600; font-size:15.5px; line-height:1.25}
+.nm span{color:var(--muted); font-size:13px}
+.tag{display:inline-flex; align-items:center; gap:4px; font-size:11.5px; font-weight:600; padding:2px 8px; border-radius:999px; white-space:nowrap}
+.t-good{background:var(--good-soft); color:var(--good)} .t-mid{background:var(--mid-soft); color:var(--mid)} .t-bad{background:var(--bad-soft); color:var(--bad)}
+.t-neu{background:var(--soft); color:var(--muted); border:1px solid var(--line)} .t-acc{background:var(--accent-soft); color:var(--accent)} .t-brass{background:var(--brass-soft); color:var(--brass)}
+.yl{display:grid; gap:6px}
+.yl .top{display:flex; align-items:baseline; gap:8px}
+.yl .big{font-family:var(--mono); font-weight:600; font-size:22px; letter-spacing:-.03em}
+.yl .net{font-size:12px; color:var(--muted)}
+.meter{height:6px; border-radius:99px; background:var(--soft); overflow:hidden; border:1px solid var(--line)}
+.meter i{display:block; height:100%; border-radius:99px}
+.m-good{background:var(--good)} .m-mid{background:var(--mid)} .m-bad{background:var(--bad)}
+.px{display:grid; grid-template-columns:auto 1fr; gap:3px 10px; font-size:13.5px; align-items:baseline}
+.px dt{color:var(--muted); font-size:12px}
+.px dd{margin:0; min-width:0}
+.px dd .num{font-weight:600}
+.px dd small{color:var(--muted); font-size:12px}
+.px dd a{color:var(--muted); text-decoration:none}
+.px dd a:hover{color:var(--accent); text-decoration:underline}
+.act{display:flex; justify-content:flex-end}
+.go{display:inline-flex; align-items:center; gap:4px; font-size:13px; font-weight:600; text-decoration:none; color:var(--accent); border:1px solid var(--line); border-radius:8px; padding:6px 10px; white-space:nowrap}
+.go:hover{border-color:var(--accent); background:var(--accent-soft)}
+.flags{display:flex; gap:6px; flex-wrap:wrap; margin-top:5px}
+.empty{padding:28px 18px; color:var(--muted); text-align:center}
+
+/* deals */
+.deals{display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:14px}
+.deal{background:var(--panel); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); padding:18px; display:flex; flex-direction:column; gap:14px}
+.d-top{display:flex; justify-content:space-between; gap:10px; align-items:flex-start}
+.d-eye{font-size:11.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); font-weight:600}
+.d-name{font-family:var(--display); font-weight:700; font-size:19px; letter-spacing:-.015em; line-height:1.2; margin-top:2px}
+.disc{font-family:var(--mono); font-weight:600; font-size:15px; background:var(--good-soft); color:var(--good); border-radius:10px; padding:6px 9px; white-space:nowrap; text-align:center; line-height:1.1}
+.disc small{display:block; font-family:var(--body); font-weight:500; font-size:10.5px; letter-spacing:.02em}
+.d-price{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap}
+.d-price .num{font-size:24px; font-weight:600; letter-spacing:-.03em}
+.d-price span{color:var(--muted); font-size:13px}
+.cmp{display:grid; gap:7px}
+.cmp .row{display:grid; grid-template-columns:92px 1fr 64px; gap:8px; align-items:center; font-size:12.5px; color:var(--muted)}
+.cmp .row .num{text-align:right; color:var(--ink); font-size:12.5px}
+.cmp .bar{height:8px; background:var(--soft); border-radius:99px; overflow:hidden}
+.cmp .bar i{display:block; height:100%; border-radius:99px}
+.b-this{background:var(--accent)} .b-avg{background:var(--faint)}
+.cmp .src{font-size:11.5px; color:var(--faint)}
+.d-stats{display:grid; grid-template-columns:1fr 1fr; border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.d-stats div{padding:9px 12px; display:grid; gap:1px}
+.d-stats div+div{border-left:1px solid var(--line)}
+.d-stats b{font-family:var(--mono); font-size:17px; font-weight:600}
+.d-stats span{font-size:11.5px; color:var(--muted)}
+.bchk{background:var(--soft); border-radius:12px; padding:10px 12px; display:grid; gap:6px}
+.bchk-top{display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap}
+.stars{font-family:var(--mono); font-size:13px; font-weight:600; color:var(--brass)}
+.stars small{font-family:var(--body); font-weight:400; color:var(--muted); font-size:11.5px}
+.bchk p{margin:0; font-size:13px; color:var(--ink); line-height:1.45}
+.d-foot{display:flex; justify-content:space-between; align-items:flex-end; gap:10px; margin-top:auto}
+.d-foot .flags{margin:0}
+
+/* distress */
+.distress-head{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;margin-top:10px;padding:22px 2px 2px;border-top:1px solid var(--line)}
+.distress-head h3{font-family:var(--display);font-size:22px;line-height:1.15;letter-spacing:-.02em;margin:0}
+.distress-head p{margin:5px 0 0;color:var(--muted);font-size:13px;max-width:720px}
+.distress-source{display:flex;align-items:center;gap:8px;flex:none}
+.distress-source:before{content:"78";font-family:var(--mono);font-weight:600;font-size:12px;color:var(--accent);background:var(--accent-soft);padding:5px 8px;border-radius:999px}
+.distress-source a{font-size:13px;font-weight:600;text-decoration:none;color:var(--accent);border:1px solid var(--line);background:var(--panel);padding:7px 11px;border-radius:9px}
+.distress-source a:hover{border-color:var(--accent);background:var(--accent-soft)}
+.distress-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.distress-card{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:17px;display:flex;flex-direction:column;gap:12px;min-width:0;transition:transform .15s,box-shadow .15s,border-color .15s}
+.distress-card:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 10px 30px -16px rgba(13,43,46,.32)}
+.distress-card .d-top{min-height:51px}
+.distress-card .d-name{font-size:18px}
+.distress-card .disc{background:var(--brass-soft);color:var(--brass);border-radius:9px;font-size:14px;padding:6px 8px}
+.distress-original{font-size:11.5px;color:var(--muted);padding:8px 10px;background:var(--soft);border-radius:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.distress-detail{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:11px;overflow:hidden}
+.distress-detail div{background:var(--panel);padding:9px 10px;min-width:0}
+.distress-detail span{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:2px}
+.distress-detail b{display:block;font-size:12.5px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.distress-meta{display:flex;gap:6px;flex-wrap:wrap;min-height:24px}
+.distress-card .d-foot{padding-top:2px;border-top:1px solid var(--line)}
+.distress-card .d-foot .flags{max-width:72%;margin:0}
+@media (max-width:900px){.distress-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.distress-head{align-items:flex-start;flex-direction:column}.distress-source{width:100%;justify-content:space-between}.distress-grid{grid-template-columns:1fr}}
+
+
+/* refined off-plan distress */
+.distress-mainhead{margin-bottom:-2px}
+.distress-live{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted);white-space:nowrap}
+.distress-live b{font-family:var(--mono);font-size:15px;color:var(--ink)}
+.distress-live a{margin-left:6px;text-decoration:none;color:var(--accent);font-weight:600}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--good);box-shadow:0 0 0 4px var(--good-soft)}
+.distress-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.distress-source-note{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:12.5px}
+.distress-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:13px;overflow:hidden}
+.distress-kpis div{background:var(--panel);padding:12px 14px}
+.distress-kpis span{display:block;font-size:10px;letter-spacing:.08em;color:var(--faint);font-weight:700;margin-bottom:3px}
+.distress-kpis b{font-family:var(--mono);font-size:15px;letter-spacing:-.02em}
+.distress-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid var(--line);padding-top:12px;color:var(--faint);font-size:11.5px}
+.distress-footer a{color:var(--accent);text-decoration:none;font-weight:600;white-space:nowrap}
+@media(max-width:620px){.distress-live{white-space:normal}.distress-toolbar{align-items:flex-start;flex-direction:column}.distress-kpis{grid-template-columns:1fr}.distress-footer{align-items:flex-start;flex-direction:column}}
+
+/* growth */
+.tks{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px}
+.tk{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:16px 18px; display:grid; gap:4px; align-content:start}
+.tk .n{font-family:var(--mono); font-weight:600; font-size:28px; letter-spacing:-.03em; color:var(--accent)}
+.tk b{font-size:14.5px; line-height:1.3}
+.tk p{margin:0; color:var(--muted); font-size:13px}
+.sh,.sr{display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1.3fr) 110px 110px 70px minmax(0,2fr); gap:14px; align-items:center; padding:13px 18px}
+.sh{background:var(--soft); font-size:11.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); font-weight:600; padding-block:10px}
+.sr{border-top:1px solid var(--line)}
+.sr.focus{box-shadow:inset 3px 0 0 var(--brass)}
+.gbar{display:flex; align-items:center; gap:8px}
+.gbar .meter{flex:1}
+.gbar b{font-family:var(--mono); font-size:14px; min-width:44px; text-align:right}
+.cell{display:grid; gap:3px; justify-items:start}
+.cell .lab{display:none}
+.cell small{color:var(--muted); font-size:11.5px}
+.read{font-size:13.5px; color:var(--muted)}
+.read .cats{display:flex; flex-wrap:wrap; gap:5px; margin-top:6px}
+.chartcard{display:grid; grid-template-columns:minmax(0,1.6fr) minmax(0,1fr); gap:0; background:var(--panel); border:1px solid var(--line); border-radius:16px; overflow:hidden}
+.chartcard>div{padding:18px}
+.chartcard>div+div{border-left:1px solid var(--line); background:var(--soft)}
+.chartcard h3,.sect{font-family:var(--display); font-weight:700; font-size:17px; letter-spacing:-.01em; margin:0 0 10px}
+.chartwrap{position:relative}
+svg#gChart{width:100%; height:auto; display:block}
+svg .grid{stroke:var(--line); stroke-width:1}
+svg .ax{fill:var(--muted); font-size:11px; font-family:var(--mono)}
+svg .lbl{fill:var(--ink); font-size:12px; font-family:var(--body); font-weight:600}
+.tip{position:absolute; background:var(--ink); color:var(--panel); font-size:12px; padding:6px 9px; border-radius:8px; pointer-events:none; white-space:nowrap}
+.steps{display:flex; align-items:baseline; gap:8px; font-family:var(--mono); font-size:26px; font-weight:600; letter-spacing:-.03em; flex-wrap:wrap}
+.steps i{font-style:normal; color:var(--faint); font-size:16px}
+.steps span:last-child{color:var(--accent)}
+.stepl{display:flex; gap:8px; font-size:11.5px; color:var(--muted); margin-top:2px; font-family:var(--mono)}
+.ratio p{font-size:13px; color:var(--muted); margin:12px 0 0}
+.timeline{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:12px}
+.tl{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:14px 16px; display:grid; gap:4px; align-content:start}
+.tl .when{font-family:var(--mono); font-size:12px; color:var(--brass); font-weight:600}
+.tl b{font-size:14.5px}
+.tl p{margin:0; color:var(--muted); font-size:13px}
+.tl .ar{font-size:12px; color:var(--accent)}
+
+details.how{border-top:1px solid var(--line); padding-top:14px; font-size:13px; color:var(--muted)}
+details.how summary{cursor:pointer; font-weight:600; color:var(--ink); font-size:13.5px}
+details.how p{max-width:78ch}
+.disclaim{font-size:12px; color:var(--faint)}
+
+@media (max-width:860px){
+  .lh,.sh{display:none}
+  .lr{grid-template-columns:32px 1fr auto; grid-template-areas:"rk nm yl" "rk px px" "rk act act"; gap:10px 12px; padding:16px}
+  .lr .rk{grid-area:rk; align-self:start; padding-top:2px} .lr .nm{grid-area:nm} .lr .yl{grid-area:yl; min-width:108px} .lr .px{grid-area:px} .lr .act{grid-area:act; justify-content:flex-start}
+  .sr{grid-template-columns:1fr 1fr; gap:10px 14px; padding:16px}
+  .sr .s-name,.sr .gbar,.sr .read{grid-column:1/-1}
+  .cell .lab{display:block}
+  .tks{grid-template-columns:1fr}
+  .chartcard{grid-template-columns:1fr}
+  .chartcard>div+div{border-left:0; border-top:1px solid var(--line)}
+}
+@media (max-width:480px){
+  .deals{grid-template-columns:1fr}
+  .hero{padding-block:22px 18px}
+  .tab{padding:10px 12px 12px; font-size:13.5px}
+  .controls{gap:10px}
+  .seg button{padding:6px 9px}
+}
+
+/* growth */
+.tks{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px}
+.tk{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:16px 18px; display:grid; gap:4px; align-content:start}
+.tk .n{font-family:var(--mono); font-weight:600; font-size:28px; letter-spacing:-.03em; color:var(--accent)}
+.tk b{font-size:14.5px; line-height:1.3}
+.tk p{margin:0; color:var(--muted); font-size:13px}
+.sh,.sr{display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1.3fr) 110px 110px 70px minmax(0,2fr); gap:14px; align-items:center; padding:13px 18px}
+.sh{background:var(--soft); font-size:11.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); font-weight:600; padding-block:10px}
+.sr{border-top:1px solid var(--line)}
+.sr.focus{box-shadow:inset 3px 0 0 var(--brass)}
+.gbar{display:flex; align-items:center; gap:8px}
+.gbar .meter{flex:1}
+.gbar b{font-family:var(--mono); font-size:14px; min-width:44px; text-align:right}
+.cell{display:grid; gap:3px; justify-items:start}
+.cell .lab{display:none}
+.cell small{color:var(--muted); font-size:11.5px}
+.read{font-size:13.5px; color:var(--muted)}
+.read .cats{display:flex; flex-wrap:wrap; gap:5px; margin-top:6px}
+.chartcard{display:grid; grid-template-columns:minmax(0,1.6fr) minmax(0,1fr); gap:0; background:var(--panel); border:1px solid var(--line); border-radius:16px; overflow:hidden}
+.chartcard>div{padding:18px}
+.chartcard>div+div{border-left:1px solid var(--line); background:var(--soft)}
+.chartcard h3,.sect{font-family:var(--display); font-weight:700; font-size:17px; letter-spacing:-.01em; margin:0 0 10px}
+.chartwrap{position:relative}
+svg#gChart{width:100%; height:auto; display:block}
+svg .grid{stroke:var(--line); stroke-width:1}
+svg .ax{fill:var(--muted); font-size:11px; font-family:var(--mono)}
+svg .lbl{fill:var(--ink); font-size:12px; font-family:var(--body); font-weight:600}
+.tip{position:absolute; background:var(--ink); color:var(--panel); font-size:12px; padding:6px 9px; border-radius:8px; pointer-events:none; white-space:nowrap}
+.steps{display:flex; align-items:baseline; gap:8px; font-family:var(--mono); font-size:26px; font-weight:600; letter-spacing:-.03em; flex-wrap:wrap}
+.steps i{font-style:normal; color:var(--faint); font-size:16px}
+.steps span:last-child{color:var(--accent)}
+.stepl{display:flex; gap:8px; font-size:11.5px; color:var(--muted); margin-top:2px; font-family:var(--mono)}
+.ratio p{font-size:13px; color:var(--muted); margin:12px 0 0}
+.timeline{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:12px}
+.tl{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:14px 16px; display:grid; gap:4px; align-content:start}
+.tl .when{font-family:var(--mono); font-size:12px; color:var(--brass); font-weight:600}
+.tl b{font-size:14.5px}
+.tl p{margin:0; color:var(--muted); font-size:13px}
+.tl .ar{font-size:12px; color:var(--accent)}
+
+details.how{border-top:1px solid var(--line); padding-top:14px; font-size:13px; color:var(--muted)}
+details.how summary{cursor:pointer; font-weight:600; color:var(--ink); font-size:13.5px}
+details.how p{max-width:78ch}
+.disclaim{font-size:12px; color:var(--faint)}
+
+@media (max-width:860px){
+  .lh,.sh{display:none}
+  .lr{grid-template-columns:32px 1fr auto; grid-template-areas:"rk nm yl" "rk px px" "rk act act"; gap:10px 12px; padding:16px}
+  .lr .rk{grid-area:rk; align-self:start; padding-top:2px} .lr .nm{grid-area:nm} .lr .yl{grid-area:yl; min-width:108px} .lr .px{grid-area:px} .lr .act{grid-area:act; justify-content:flex-start}
+  .sr{grid-template-columns:1fr 1fr; gap:10px 14px; padding:16px}
+  .sr .s-name,.sr .gbar,.sr .read{grid-column:1/-1}
+  .cell .lab{display:block}
+  .tks{grid-template-columns:1fr}
+  .chartcard{grid-template-columns:1fr}
+  .chartcard>div+div{border-left:0; border-top:1px solid var(--line)}
+}
+@media (max-width:480px){
+  .deals{grid-template-columns:1fr}
+  .hero{padding-block:22px 18px}
+  .tab{padding:10px 12px 12px; font-size:13.5px}
+  .controls{gap:10px}
+  .seg button{padding:6px 9px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="band">
+  <div class="inner">
+    <div class="topline">
+      <div class="logo">
+        <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect x="2" y="12" width="5" height="12" rx="1" fill="var(--band-muted)"/><rect x="9" y="6" width="5" height="18" rx="1" fill="var(--band-ink)"/><rect x="16" y="2" width="5" height="22" rx="1" fill="var(--brass)"/><rect x="1" y="24" width="24" height="1.5" fill="var(--band-muted)"/></svg>
+        <span data-t="brand"></span>
+      </div>
+      <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap">
+        <span class="stamp" data-t="stamp"></span>
+        <div class="lang" role="group" aria-label="Language / 语言">
+          <button type="button" id="langEn" aria-pressed="true">EN</button>
+          <button type="button" id="langZh" aria-pressed="false">中文</button>
+        </div>
+      </div>
+    </div>
+    <div class="hero">
+      <h1 id="heroTitle"></h1>
+      <div class="ask">
+        <form id="askForm">
+          <input id="q" type="text" autocomplete="off">
+          <button class="btn" id="askBtn" type="submit"></button>
+        </form>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button type="button" class="tab" role="tab" id="tabIncome" aria-selected="true"><span data-t="tabIncome"></span></button>
+      <button type="button" class="tab" role="tab" id="tabDeals" aria-selected="false"><span data-t="tabDeals"></span><span class="ct" id="dealCount"></span></button>
+      <button type="button" class="tab" role="tab" id="tabDistress" aria-selected="false"><span data-t="tabDistress"></span><span class="ct" id="distressCount"></span></button>
+      <button type="button" class="tab" role="tab" id="tabGrowth" aria-selected="false"><span data-t="tabGrowth"></span></button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- INCOME -->
+  <section id="viewIncome" class="view" role="tabpanel">
+    <div class="head">
+      <div><h2 id="aHead"></h2><div class="sub" id="aSub"></div></div>
+    </div>
+    <div class="note" id="aNote" hidden></div>
+    <div class="controls">
+      <div class="ctl"><div class="seg" id="segKind"><button type="button" data-v="apt"></button><button type="button" data-v="house"></button></div></div>
+      <div class="ctl"><span class="lab" data-t="bedrooms"></span><div class="seg" id="segBeds"></div></div>
+      <div class="ctl"><span class="lab" data-t="minYield"></span><div class="seg" id="segMin"></div></div>
+      <div class="ctl"><div class="seg" id="segBasis"><button type="button" data-v="gross"></button><button type="button" data-v="net"></button></div></div>
+      <button type="button" class="pillbtn" id="heavyBtn" hidden></button>
+      <button type="button" class="pillbtn" id="budgetBtn" hidden></button>
+    </div>
+    <div class="list" id="list"></div>
+    <details class="how"><summary data-t="howIncome"></summary><p id="methodIncome"></p></details>
+  </section>
+
+  <!-- DEALS -->
+  <section id="viewDeals" class="view" role="tabpanel" hidden>
+    <div class="head">
+      <div><h2 id="dHead"></h2><div class="sub" data-t="dSub"></div></div>
+      <div class="seg" id="segSort"><button type="button" data-v="up"></button><button type="button" data-v="disc"></button><button type="button" data-v="y"></button></div>
+    </div>
+    <div class="deals" id="deals"></div>
+    <details class="how"><summary data-t="howDeals"></summary><p id="methodDeals"></p><p id="sourcesDeals"></p></details>
+  </section>
+
+  <!-- OFF-PLAN DISTRESS -->
+  <section id="viewDistress" class="view" role="tabpanel" hidden>
+    <div class="head distress-mainhead">
+      <div><h2 id="distressTitle"></h2><div class="sub" id="distressSub"></div></div>
+      <div class="distress-live"><span class="live-dot"></span><b>78</b> live units <a href="https://distressonly.deals/?search=&min_price=&max_price=&min_sqft=&max_sqft=&sort=discount_desc" target="_blank" rel="noopener">Open live inventory ↗</a></div>
+    </div>
+    <div class="distress-toolbar">
+      <div class="distress-source-note"><span class="tag t-acc">DISTRESSSTOCK</span><span>Live source · sorted by highest discount</span></div>
+      <div class="seg" id="segDistressSort"><button type="button" data-v="disc"></button><button type="button" data-v="price"></button></div>
+    </div>
+    <div class="distress-kpis">
+      <div><span>LIVE INVENTORY</span><b>78</b></div>
+      <div><span>RANKING</span><b>Highest discount</b></div>
+      <div><span>FOCUS</span><b>Off-plan + motivated sales</b></div>
+    </div>
+    <div class="distress-grid" id="distressDeals"></div>
+    <div class="distress-footer"><span>Integrated snapshot · ranked highest discount first. Live inventory may change.</span><a href="https://distressonly.deals/?search=&min_price=&max_price=&min_sqft=&max_sqft=&sort=discount_desc" target="_blank" rel="noopener">See all 78 units ↗</a></div>
+  </section>
+
+  <!-- GROWTH -->
+  <section id="viewGrowth" class="view" role="tabpanel" hidden>
+    <div class="head">
+      <div><h2 id="gHead"></h2><div class="sub" id="gSub"></div></div>
+      <div class="seg" id="segGKind"><button type="button" data-v="apt"></button><button type="button" data-v="villa"></button></div>
+    </div>
+    <div class="tks" id="tks"></div>
+    <div class="list">
+      <div class="sh" id="sh"></div>
+      <div id="srows"></div>
+    </div>
+    <section class="chartcard">
+      <div>
+        <h3 data-t="chartTitle"></h3>
+        <div class="chartwrap"><svg id="gChart" role="img"></svg><div class="tip" id="gTip" hidden></div></div>
+      </div>
+      <div class="ratio">
+        <h3 data-t="ratioTitle"></h3>
+        <div class="steps" id="ratioSteps"></div>
+        <div class="stepl" id="ratioLbl"></div>
+        <p data-t="ratioNote"></p>
+      </div>
+    </section>
+    <h3 class="sect" data-t="catTitle"></h3>
+    <div class="timeline" id="timeline"></div>
+    <details class="how"><summary data-t="howGrowth"></summary><p id="methodGrowth"></p><p id="sourcesGrowth"></p></details>
+  </section>
+  <p class="view disclaim" data-t="disclaim" style="margin-top:18px"></p>
+</main>
+
+<script>
+(function(){
+  const ROWS = [["jumeirah-village-circle","a",0,5,8.37,39,[430000,451,"Hanover Square","139704576",36000,391,"White Rose","147340063"]],["jumeirah-village-circle","a",1,5,7.83,40,[599999,589,"Summer 2","109043082",47000,582,"Summer 2","127037646"]],["jumeirah-village-circle","a",2,5,7.79,40,[899000,1103,"Summer 2","110501919",70000,1257,"Summer 2","143749093"]],["dubai-sports-city","a",0,5,8.29,39,[409999,336,"Royal Residence 1","143300528",34000,353,"Royal Residence 1","123385598"]],["dubai-sports-city","a",1,5,7.62,39,[630000,676,"Champions Tower 1","149077177",48000,657,"Royal Residence 1","142845602"]],["dubai-sports-city","a",2,5,7.56,40,[899999,1119,"Hamza Tower","122457824",67999,1062,"Global Golf Residences 2","141927143"]],["dubai-silicon-oasis","a",0,5,7.74,40,[439000,344,"Palace Tower 2","112316973",34000,345,"Silicon Gates 1","149564038"]],["dubai-silicon-oasis","a",1,5,8.84,40,[560000,791,"Axis Residence 2","141917473",49500,794,"Axis Residence 2","147783685"]],["dubai-silicon-oasis","a",2,5,6.91,40,[940000,941,"Khan Saheb Building 1","149113355",65000,990,"Palace Tower 2","145972034"]],["town-square","a",0,5,6.36,38,[549999,314,"Hayat Boulevard 2A","145996435",35000,331,"Safi 1A","148654700"]],["town-square","a",1,5,7.26,40,[730000,477,"UNA Apartments","113284736",53000,478,"Liva","149566458"]],["town-square","a",2,5,6.36,39,[1100000,928,"Zahra Apartments 2B","147786946",70000,882,"Safi 1A","146888772"]],["arjan","a",0,5,8.78,40,[410000,401,"Aryene Greens","148624305",36000,419,"Burj Residence 3","146888201"]],["arjan","a",1,5,7.33,39,[750000,760,"Lincoln Park A","141443772",55000,729,"Orion Building","148654443"]],["arjan","a",2,5,7,40,[999999,834,"Green Diamond 1 Tower A","140141916",69999,804,"Al Dhabi Tower","123382611"]],["international-city","a",0,5,8.53,40,[340000,463,"Building Y16","74236380",29000,484,"Building P07","141463455"]],["international-city","a",1,5,8.86,40,[440000,716,"Building S10","145087098",39000,732,"Building L13","140584900"]],["meydan","a",0,5,6.55,40,[580000,294,"Azizi Riviera 1","146009392",37999,319,"Azizi Riviera 23","126104679"]],["meydan","a",1,5,5.53,40,[850000,512,"Azizi Riviera 25","145051112",47000,528,"RRM Building","147782768"]],["meydan","a",2,5,5.71,37,[1400000,895,"Azizi Greenfield","149558801",80000,880,"Azizi Riviera 35","129285699"]],["greens","a",0,5,6.12,14,[850000,432,"Al Dhafra 4","150007230",52000,438,"Al Samar 3","144203309"]],["greens","a",1,5,5.55,40,[1225000,798,"Al Thayyal 4","128831809",68000,739,"Al Arta 1","141907853"]],["greens","a",2,5,5.13,40,[1950000,1133,"Al Thayyal 2","141932455",100000,1156,"Al Thayyal 4","138325899"]],["business-bay","a",0,5,8.38,32,[525000,451,"Tower C","147762617",44000,457,"Safeer Tower 1","125627379"]],["business-bay","a",1,5,6.67,40,[900000,802,"Ontario Tower","145520077",60000,740,"Scala Tower","142843971"]],["business-bay","a",2,5,6.16,40,[1299000,982,"Ontario Tower","147762404",79999,1044,"MBK Tower","132504010"]],["downtown-dubai","a",0,5,6.39,40,[830000,440,"Burj Al Nujoom","149563611",53000,444,"Burj Al Nujoom","139237067"]],["downtown-dubai","a",1,5,6,40,[1299000,819,"Burj Al Nujoom","118570693",78000,811,"Burj Al Nujoom","122908757"]],["downtown-dubai","a",2,5,6.61,40,[1800000,1372,"Damac Maison The Signature","145541891",119000,1299,"Burj Views C","150021070"]],["dubai-creek-harbour-the-lagoons","a",1,5,5.02,40,[1535000,684,"Cedar at Creek Beach 4","145543063",77000,682,"Mangrove at Creek Beach 2","94026743"]],["dubai-creek-harbour-the-lagoons","a",2,5,4.82,40,[2180000,1015,"Moor at Creek Beach 1","139652604",104999,1056,"Sunset at Creek Beach 3","148646573"]],["dubai-south","a",0,5,8.06,40,[465000,386,"Damac Maison de Ville Tenora","130670377",37499,387,"MAG 555","147757730"]],["dubai-south","a",1,5,6.93,40,[649000,514,"MAG 555","149084678",45000,478,"MAG 505","150007494"]],["dubai-south","a",2,5,6.68,28,[973000,934,"Kappa Acca 1","138306920",64999,973,"29 Dubai South","143299015"]],["dubai-marina","a",0,5,6.43,27,[699999,359,"Escan Tower","138339065",45000,385,"Marina Diamond 1","112282071"]],["dubai-marina","a",1,3,7.06,40,[850000,931,"Marina Pinnacle","149085892",60000,917,"Sulafa Tower","98245535"]],["dubai-marina","a",2,5,6.54,40,[1300000,963,"Marina Diamond 2","146438155",84990,1103,"Escan Tower","149546672"]],["jumeirah-lake-towers","a",0,5,7.26,39,[620000,415,"Golf Views Seven City","140133991",45000,398,"Goldcrest Views 2","143740610"]],["jumeirah-lake-towers","a",1,5,7.27,40,[660000,445,"New Dubai Gate 1","115930112",48000,450,"New Dubai Gate 1","132963935"]],["jumeirah-lake-towers","a",2,5,6.32,40,[1250000,922,"New Dubai Gate 1","138782916",78990,954,"New Dubai Gate 1","129276095"]],["motor-city","a",0,4,6.73,9,[790000,595,"Barton House 1","120649162",50000,608,"Barton House 1","141915026"]],["motor-city","a",1,4,6.46,34,[889999,779,"Rabdan Building","145532902",57500,686,"Shakespeare Circus 1","149537449"]],["motor-city","a",2,5,6.52,37,[1380000,1201,"Rabdan Building","149537668",90000,1175,"Rabdan Building","132968434"]],["al-furjan","a",0,5,8,40,[499999,417,"Montrell","138314739",39999,376,"Azizi Amber","145085695"]],["al-furjan","a",1,5,6.53,38,[750000,543,"Azizi Pearl","116803545",49000,585,"Bnh Twin Tower","144605640"]],["al-furjan","a",2,5,6.82,40,[1100000,884,"Equiti Arcade","149077695",74999,917,"Equiti Arcade","131562317"]],["dubai-hills-estate","a",0,5,6.24,30,[929999,389,"Sway Residences","139249124",58000,385,"Sway Residences","145503403"]],["dubai-hills-estate","a",1,5,6.09,40,[1099890,500,"Golfville Block A","143300242",67000,475,"Collective Tower 1","143315071"]],["dubai-hills-estate","a",2,5,5.27,40,[1575000,743,"Golfville Block A","144630939",82999,735,"Collective 2.0 Tower A","129768283"]],["town-square","h",3,5,5.38,40,[2600000,2054,"Zahra Townhouses","135603613",139999,2042,"Safi Townhouses","147760777"],"th"],["town-square","h",4,5,5.15,40,[3299999,2880,"Hayat Townhouses","139665188",169999,2851,"Noor Townhouses","145537681"],"th"],["damac-hills-2","h",3,5,5.62,40,[1245000,1208,"Amargo","142821328",69999,1208,"Vardon","150008499"],"th"],["damac-hills-2","h",4,5,5.53,29,[1900000,1672,"Sanctnary","132014700",104999,1881,"Pacifica","146443924"],"villa"],["damac-hills-2","h",5,4,3.81,5,[3500000,2632,"Park Greens","86617170",130000,2516,"Juniper","146447826"],"villa"],["villanova","h",3,5,5.09,40,[2650000,1732,"Amaranta B","123828218",134999,1945,"Amaranta 2","142851725"],"th"],["villanova","h",4,5,5,39,[3199000,2480,"Amaranta 3","139659769",159999,2466,"Amaranta 1","111406730"],"villa"],["villanova","h",5,4,4.38,8,[7300000,5532,"La Quinta","144614895",315000,5618,"La Quinta","117713201"],"villa"],["mudon","h",3,5,5.54,40,[2800000,1733,"Arabella Townhouses 3","129299827",155000,1808,"Arabella Townhouses 3","142854297"],"th"],["mudon","h",4,5,5.11,40,[3799999,2624,"Arabella Townhouses 3","109036688",194000,2785,"Arabella Townhouses 3","135653037"],"th"],["arabian-ranches-3","h",3,5,4.81,40,[2700000,1387,"Joy","136096142",129998,1378,"Joy","149537481"],"th"],["arabian-ranches-3","h",4,5,4.49,39,[3900000,2406,"Joy","144606792",175000,2548,"Spring","146463345"],"th"],["arabian-ranches-3","h",5,5,4.76,39,[6300000,4521,"June","145999384",300000,4521,"June","142349265"],"villa"],["the-springs","h",3,5,4.94,40,[3850000,1856,"Springs 8","122924577",190000,1857,"Springs 11","150006384"],"villa"],["dubai-south","h",3,5,4.28,40,[2100000,1558,"Parkside 1","137878483",89900,1521,"Parkside 2","142857465"],"th"],["dubai-south","h",4,5,3.97,40,[2898888,2341,"Parkside 3","131535512",115000,2632,"Parkside 1","149077657"],"th"],["dubai-south","h",5,5,3.82,27,[5499999,4219,"Hayat 3","149554182",210000,4102,"The Pulse Beachfront 2","145078859"],"villa"],["jumeirah-village-circle","h",3,5,5.18,37,[2800000,1536,"Diamond Views 3 Villas B","143755274",144999,1455,"Mirabella 7","146458990"],"villa"],["jumeirah-village-circle","h",4,5,5.36,27,[2799000,1595,"Sydney Villas","89650720",149999,1721,"Indigo Ville 8","148637878"],"villa"],["dubai-hills-estate","h",3,5,4.63,31,[4750000,2091,"Maple 1","148615736",219999,2260,"Maple 2","146002933"],"villa"],["dubai-hills-estate","h",4,5,4.43,40,[5300000,2175,"Maple 1","138748894",234990,2172,"Maple 1","142350894"],"villa"],["dubai-hills-estate","h",5,5,4.11,40,[6200000,3242,"Maple 1","146423153",254999,3152,"Maple 1","146888417"],"villa"],["arabian-ranches","h",3,5,4.27,38,[4100000,2672,"Al Reem 3","146423148",175000,2288,"Al Reem 1","138748946"],"villa"],["arabian-ranches","h",4,5,4.17,30,[5750000,2844,"Al Reem 2","123818999",240000,2718,"Al Reem 1","131576788"],"villa"],["arabian-ranches","h",5,4,4.46,38,[9300000,6037,"Aseel","135153347",415000,6800,"Mirador","130222564"],"villa"],["damac-hills","h",3,5,4.92,40,[2950000,1485,"Bel Air","144601049",145000,1485,"Bel Air","145065288"],"th"],["damac-hills","h",4,5,5.15,39,[3300000,2333,"Silver Springs 3","140130226",170000,1988,"Silver Springs 3","104123947"],"th"],["damac-hills","h",5,5,4.8,37,[6149000,4205,"Queens Meadow","127477409",295000,4168,"Brookfield","148634511"],"villa"],["the-valley","h",3,5,5.2,40,[2500000,1483,"Elora","150008073",130000,1483,"Elora","145092581"],"th"],["the-valley","h",4,5,4.55,39,[3299999,2772,"Nara","139222375",150000,2771,"Eden","108170858"],"villa"],["tilal-al-ghaf","h",3,5,4.71,40,[3500000,1578,"Elan","144639254",165000,1511,"Elan","107295129"],"th"],["tilal-al-ghaf","h",4,5,5.01,40,[4375000,2201,"Elan","63245986",219000,2174,"Elan","80679898"],"villa"],["tilal-al-ghaf","h",5,5,4.66,40,[6650000,2370,"Aura 1","135610116",310000,2534,"Aura","101712175"],"villa"],["jumeirah-golf-estates","h",3,5,5.35,30,[4299999,1501,"Jasmine Lane","144599885",229999,1537,"Al Andalus Townhouses","125627957"],"th"],["jumeirah-golf-estates","h",4,5,5.56,27,[7100000,2820,"Jumeirah Luxury","144622530",395000,2820,"Jumeirah Luxury","144604987"],"villa"],["jumeirah-golf-estates","h",5,4,4.44,36,[15750000,9731,"Orange Lake","131538842",700000,9021,"Sienna Lakes","149079063"],"villa"],["jumeirah-park","h",4,5,3.65,35,[7800000,5737,"Legacy Nova Villas","142349717",285000,5242,"Legacy Nova Villas","149551496"],"villa"],["jumeirah-park","h",5,5,3.27,40,[12250000,8611,"District 1","146454101",400000,8000,"District 3","149559259"],"villa"],["arabian-ranches-2","h",3,5,4.69,20,[3199999,1507,"Camelia 1","136081447",150000,1507,"Camelia 2","127017567"],"th"],["arabian-ranches-2","h",4,5,4.71,9,[4250000,2378,"Camelia 1","145522336",200000,2636,"Camelia 2","144625152"],"th"],["arabian-ranches-2","h",5,5,4.52,19,[7299000,4359,"Palma","116802873",330000,4650,"Lila","130675327"],"villa"],["al-furjan","h",3,5,5.2,40,[3460000,1911,"The Dreamz","87046784",179998,1784,"West Village","147767908"],"th"],["al-furjan","h",4,5,5,40,[3600000,1835,"Al Furjan West","147752820",180000,1911,"Al Furjan West","145530969"],"th"],["al-furjan","h",5,5,3.67,40,[7499999,6458,"Stella's by Murano","143734472",275000,6456,"Dubai Style","138309024"],"villa"],["damac-lagoons","h",3,5,5.4,35,[2400000,1550,"Portofino","138303213",129500,1550,"Portofino","141938242"],"th"],["damac-lagoons","h",4,5,5.19,38,[2600000,1550,"Marbella","142386387",134900,1550,"Malta","132491247"],"villa"],["damac-lagoons","h",5,5,4.86,28,[3600000,2364,"Portofino","135617309",175000,2364,"Santorini","120642413"],"villa"]];
+  // DistressStock listings surfaced from https://distressonly.deals/ (25 Sep 2026 research snapshot).
+  // These are kept separate from DLD-comparison deals because the source provides original price, resale price,
+  // discount, payment-plan/hand-over context, but not the same-building DLD benchmark used above.
+  const DISTRESS_DEALS = [
+    {name:"Peace Lagoons",area:"Dubai Land",developer:"Peace Homes Development",bed:2,size:1416,price:1280000,original:1872000,disc:31.6,hand:"Q1 2028",view:"Lagoon / Private Pool",url:"https://www.mitchellscommercialrealty.com/distress-deals/distress-deal-2-br-with-pool-in-peace-lagoons",date:"2026-09-25"},
+    {name:"Kempinski Marina Residence",area:"dubai-marina",developer:"ABA Real Estate",bed:1,size:1173,price:2100000,original:2705037,disc:22.4,hand:"Q1 2029",view:"Partial Sea",url:"https://distressonly.deals/u/XEMyWU",date:"2026-05-09"},
+    {name:"Vincitore Aqua Dimore",area:"dubai-science-park",developer:"Vincitore",bed:2,size:1365,price:1573180,original:2135120,disc:26.3,hand:"2027",view:"Park",url:"https://distressonly.deals/u/BdnJFm",date:"2026-05-12"},
+    {name:"Address Bayview - Tower 2",area:"beachfront",developer:"Emaar",bed:2,size:1468,price:6150000,original:7881004,disc:22.0,hand:"Q3 2028",view:"Marina, Sea",url:"https://distressonly.deals/u/TEM8n5",date:"2026-07-13"},
+    {name:"W Residences - Tower 1",area:"dubai-harbour",developer:"Arada",bed:2,size:1795,price:6870000,original:8112000,disc:15.3,hand:"Q4 2028",view:"Full Dubai Ain, Sea",url:"https://distressonly.deals/u/CSCjsl",date:"2026-06-18"},
+    {name:"Ocean House",area:"palm-jumeirah",developer:"Ellington",bed:2,size:1643,price:7500000,original:8361600,disc:10.3,hand:"Q4 2026",view:"Dubai Marina, Amenities",url:"https://distressonly.deals/u/QLw7SN",date:"2026-05-24"},
+    {name:"Bay Grove Residences - Building B6",area:"dubai-islands",developer:"Nakheel",bed:3,size:2060,price:4630000,original:5038800,disc:8.1,hand:"Q1 2029",view:"Full Sea",url:"https://distressonly.deals/u/1Ma1QF",date:"2026-06-05"},
+    {name:"V1Vid Tower",area:"jumeirah-village-triangle",developer:"Object 1",bed:2,size:1332,price:1615286,original:1787124,disc:9.6,hand:"Q3 2026",view:"Community, Dubai Marina, Jumeirah Islands",url:"https://distressonly.deals/u/apsTCE",date:"2026-06-09"},
+    {name:"Nautica Two",area:"maritime-city",developer:"Select Group",bed:2,size:1032,price:2485000,original:2912000,disc:14.7,hand:"Q4 2026",view:"Sea, Marina",url:"https://distressonly.deals/u/DAtrIk",date:"2026-07-23"},
+    {name:"Ocean Cove - Building 1",area:"rashid-yachts-marina",developer:"Emaar",bed:2,size:1285,price:2480000,original:2829724,disc:12.4,hand:"Q4 2027",view:"Pool",url:"https://distressonly.deals/u/1gsQQn",date:"2026-06-13"},
+    {name:"Marina Views - Tower 3",area:"rashid-yachts-marina",developer:"Emaar",bed:2,size:1255,price:3400000,original:3828124,disc:11.2,hand:"Q4 2028",view:"Marina",url:"https://distressonly.deals/u/SMOQ0w",date:"2026-06-05"},
+    {name:"Liv Oceanside",area:"dubai-islands",developer:"LIV",bed:1,size:884,price:2724000,original:3077930,disc:11.5,hand:"Q4 2027",view:"Full Marina & Skyline",url:"https://distressonly.deals/u/razo4E",date:"2026-08-06"},
+    {name:"Wynwood",area:"dubai-islands",developer:"Imtiaz",bed:1,size:724,price:1720000,original:1984284,disc:13.3,hand:"Q3 2027",view:"Road, Partial Canal",url:"https://distressonly.deals/u/IVot8Y",date:"2026-08-17"},
+    {name:"Skyview",area:"dubai-production-city",developer:"Samana",bed:2,size:1128,price:1250000,original:1525888,disc:18.1,hand:"Q4 2028",view:"Amenities",url:"https://distressonly.deals/u/lyA7qm",date:"2026-06-13"},
+    {name:"Samana Barari Views 2",area:"dubai-land",developer:"Samana",bed:0,size:444,price:630000,original:708536,disc:11.1,hand:"Q4 2027",view:"Barari, Pool",url:"https://distressonly.deals/u/pDZx8S",date:"2026-04-18"},
+    {name:"Address Villas Hillcrest",area:"dubai-hills-estate",developer:"Emaar",bed:5,size:9918,price:22300000,original:24263083,disc:8.1,hand:"READY AND VACANT",view:"—",url:"https://distressonly.deals/u/vbkZNx",date:"2026-05-07",plot:6986}
+  ];
+
+  const DEALS = [{"b":"Marina Pinnacle","c":"dubai-marina","bed":1,"price":800000,"size":838,"avg":1223,"n":7,"per":"1y","disc":21.9,"y":7.25,"rent":57999,"rentBld":"Escan Tower","flags":["fire","tenanted"],"path":"/en/plp/buy/apartment-for-sale-dubai-dubai-marina-marina-pinnacle-149085809.html","rs":4.4,"rn":23,"rsrc":"Property Finder","up":"risk","note":{"en":"Fire in June 2025 evacuated all 764 flats; repairs were due to take ~8 months from Jan 2026. The discount may reflect fire damage, not mispricing.","zh":"2025年6月失火，764户全部撤离，维修预计从2026年1月起约8个月。便宜很可能是火灾影响，不一定是捡漏。"}},{"b":"The Bridge","c":"dubai-sports-city","bed":1,"price":615000,"size":543,"avg":1427,"n":7,"per":"1y","disc":20.6,"y":7.64,"rent":47000,"rentBld":"Cricket Tower","flags":["vacant","partfurn","highfloor"],"path":"/en/plp/buy/apartment-for-sale-dubai-dubai-sports-city-the-bridge-148635168.html","rs":5.0,"rn":6,"rsrc":"Property Finder","up":"fair","note":{"en":"Built 2013 by The First Group, 315 units. Residents call it well kept, best in the area. Sports City itself grows slowly.","zh":"2013年 The First Group 建成，315 套。住户评价维护好、片区里最好的楼之一。但 Sports City 整体涨得慢。"}},{"b":"Marina Pinnacle","c":"dubai-marina","bed":2,"price":1150000,"size":1219,"avg":1117,"n":42,"per":"3y","disc":15.6,"y":6.96,"rent":80000,"rentBld":"Dream Tower 1","flags":["fire","tenanted","inconsistent"],"path":"/en/plp/buy/apartment-for-sale-dubai-dubai-marina-marina-pinnacle-149085726.html","rs":4.4,"rn":23,"rsrc":"Property Finder","up":"risk","note":{"en":"Same tower as above: 2025 fire. Check repair status, insurance payout and whether the unit is habitable.","zh":"同一栋楼，2025年失火。要先查维修进度、保险赔付和能否入住。"}},{"b":"Azizi Riviera 47","c":"meydan","bed":0,"price":599999,"size":303,"avg":2356,"n":10,"per":"1y","disc":16.0,"y":6.33,"rent":37999,"rentBld":"Azizi Riviera","flags":["stale"],"path":"/en/plp/buy/apartment-for-sale-dubai-meydan-meydan-one-azizi-riviera-azizi-riviera-47-98720509.html","rs":null,"rn":0,"rsrc":"Property Finder","up":"limited","note":{"en":"One of ~75 near-identical Azizi buildings, mostly studios competing for the same tenants. Resale is slower; the discount may persist.","zh":"Azizi 约75栋同类楼之一，以开间为主，租客和买家都被分流。转手慢，便宜可能会一直便宜。"}},{"b":"Aykon City Tower C","c":"business-bay","bed":2,"price":1299999,"size":811,"avg":1885,"n":41,"per":"1y","disc":15.0,"y":6.08,"rent":78998,"rentBld":"Aykon City Tower C","flags":["highfloor"],"path":"/en/plp/buy/apartment-for-sale-dubai-business-bay-aykon-city-aykon-city-tower-c-145051514.html","rs":null,"rn":0,"rsrc":"Property Finder","up":"fair","note":{"en":"DAMAC, completed 2023, on Sheikh Zayed Road. Liquid (41 sales in a year), but Business Bay has 10,000+ units still coming.","zh":"DAMAC 开发，2023年交付，在 Sheikh Zayed Road 边上。成交活跃（一年41笔），但 Business Bay 还有1万多套在建。"}},{"b":"Collective 2.0 Tower A","c":"dubai-hills-estate","bed":1,"price":1080000,"size":478,"avg":2548,"n":7,"per":"1y","disc":11.3,"y":6.2,"rent":67000,"rentBld":"Collective 2.0","flags":["furnished","tenanted"],"path":"/en/plp/buy/apartment-for-sale-dubai-dubai-hills-estate-collective-20-collective-20-tower-a-142821724.html","rs":null,"rn":0,"rsrc":"Property Finder","up":"limited","note":{"en":"Emaar brand, but a very small 478 sq ft one-bed among many similar Collective units. Dubai Hills flats have softened lately.","zh":"Emaar 品牌，但一房只有478平方英尺，同小区同类户型很多。Dubai Hills 公寓近期走弱。"}},{"b":"Ontario Tower","c":"business-bay","bed":1,"price":900000,"size":802,"avg":1253,"n":16,"per":"1y","disc":10.5,"y":6.67,"rent":60000,"rentBld":"Scala Tower","flags":["vacant","firm"],"path":"/en/plp/buy/apartment-for-sale-dubai-business-bay-ontario-tower-145520077.html","rs":3.3,"rn":4,"rsrc":"FlatReviews","up":"limited","note":{"en":"Built 2010, 29 floors. Residents cite construction noise, slow maintenance and no thermostat on district cooling. Older stock tends to lag.","zh":"2010年建成，29层。住户吐槽周边施工噪音、维修慢、区域供冷不能调温。老楼一般涨不过新楼。"}},{"b":"Sway Residences","c":"dubai-hills-estate","bed":0,"price":930000,"size":515,"avg":2015,"n":23,"per":"1y","disc":10.4,"y":6.45,"rent":60000,"rentBld":"Sway Residences","flags":["vacant"],"path":"/en/plp/buy/apartment-for-sale-dubai-dubai-hills-estate-sway-residences-144627149.html","rs":4.3,"rn":2,"rsrc":"Property Finder","up":"fair","note":{"en":"12-floor building near the park with direct Al Khail Road access. Residents say it's quiet and clean; nearby construction was noisy.","zh":"12层小楼，靠公园，直上 Al Khail Road。住户说安静干净，之前周边施工吵。"}},{"b":"Damac Maison The Signature","c":"downtown-dubai","bed":2,"price":1800000,"size":1372,"avg":1461,"n":6,"per":"1y","disc":10.2,"y":6.61,"rent":119000,"rentBld":"Burj Views C","flags":["furnished","thin"],"path":"/en/plp/buy/apartment-for-sale-dubai-downtown-dubai-burj-khalifa-area-damac-maison-dubai-mall-street-the-signature-145541891.html","rs":2.7,"rn":8,"rsrc":"Property Finder","up":"risk","note":{"en":"Next to Dubai Mall, but residents report sewage collected by truck, high service charges and poor management. The discount looks earned.","zh":"紧挨 Dubai Mall，但住户反映污水靠罐车拉走、物业费高、管理差。便宜是有原因的。"}}];
+  const DEFAULT_LANG = "zh";
+  const PF = "https://www.propertyfinder.ae";
+
+  const T = {
+    en:{
+      brand:"Dubai Yield Agent", stamp:"Listings checked 25 Sep 2026",
+      hero:"Where Dubai rent <em>pays back</em> the price",
+      ph:"Ask anything, e.g. 4-bed villas above 5%", ask:"Ask", thinking:"…",
+      tabIncome:"Rental yield", tabDeals:"Undervalued deals", tabDistress:"Off-plan distress", tabGrowth:"Growth potential",
+      bedrooms:"Beds", minYield:"Min", apt:"Apartments", house:"Villas & townhouses", villa:"Villas & townhouses", any:"Any",
+      bed:b=>b===0?"Studio":`${b} bed`, gross:"Gross", net:"Net est.",
+      th:"Townhouse", vi:"Villa",
+      cols:["#","Community","Entry yield","Buy · rent (same size)",""],
+      headN:(n,k)=>`${n} ${k} area${n===1?"":"s"} at the top`, headNone:"Nothing matches",
+      subIncome:(k,m,basis)=>`${k} · ${basis} yield ${m}%+ · ranked high to low`,
+      buy:"Buy", rent:"Rent", yr:"/yr", sqft:"sq ft", netAbout:"net", view:"Listing",
+      heavy:"Heavy supply", heavyHidden:n=>`<b>${n}</b> hidden for heavy new supply · show`, heavyShown:"Hide heavy-supply areas",
+      budget:v=>`Budget ≤ <b>AED ${v}</b> · clear`, noMatch:"No area clears these filters. Lower the minimum yield.",
+      unsupported:"Not covered:", unsOther:"only Dubai is loaded.", unsScope:"apartments here go up to 2 bed; villas and townhouses 3–5 bed.",
+      howIncome:"How yield is calculated",
+      methodIncome:"For each community and home type, the 5 cheapest ready homes for sale on Property Finder are each paired with the cheapest unfurnished yearly rental of the same bedrooms and type, within 15% of its size. The yield shown is the middle pair. Off-plan, furnished rentals and bait prices are excluded. Villas and townhouses are merged because listings label them inconsistently. Net deducts service charge (AED 12/sq ft flats, AED 4 houses) and 5% for vacancy. Heavy-supply flags: JVC 16,852 units due 2025–27 and Dubai South (Azizi Venice 7,860) per Morgan's; Arjan about 9,000 by 2027 per Cavendish Maxwell. Asking prices, 25 Sep 2026.",
+      distressTitle:"Off-plan distressed deals", distressSub:"Off-plan and motivated-sale listings · ranked by discount from original price", distressSortDisc:"Highest discount", distressSortPrice:"Lowest price",
+      distressTitle:"期房急售 / 折价房源", distressSub:"期房与急售房源 · 按较原价折扣从高到低排名", distressSortDisc:"折扣最高", distressSortPrice:"总价最低",
+      dHead:n=>`${n} flats listed below their building's recent sales`,
+      dSub:"Asking price per sq ft vs DLD sales in the same building. Cheaper is not the same as going up: each card says why it may be cheap.",
+      sortUp:"Best upside first", sortDisc:"Biggest discount", sortY:"Highest yield", below:"below", bldAvg:"Building avg", thisUnit:"This unit",
+      src:(n,p)=>`${n} DLD sales · ${p==="3y"?"3 yrs":"12 mo"}`, dYield:"Yield", dRent:"Matched rent",
+      revs:"resident reviews", noRevs:"No resident reviews yet",
+      up:{fair:"Upside: fair", limited:"Limited upside", risk:"Known issue: check first"},
+      flags:{offplan:"Off-plan",fire:"2025 fire",tenanted:"May be tenanted",vacant:"Vacant",partfurn:"Part furnished",highfloor:"High floor",inconsistent:"Details inconsistent",stale:"Listed Jun 2026",furnished:"Furnished",firm:"Non-negotiable",thin:"Few building sales"},
+      howDeals:"How deals were screened",
+      methodDeals:"469 of the cheapest ready apartment listings across 18 communities were each compared with DLD ready-sale prices for the same building and bedroom count (last 12 months, or 3 years when there were fewer than 5 sales). A listing passes if it is 10–40% below that average and a same-size unfurnished rental gives at least 6%. Villas and townhouses are left out because their listed sizes mix plot and built-up area. Building notes come from resident reviews on Property Finder and FlatReviews, Khaleej Times fire coverage and Propsearch building data. Check title deed, tenancy, view and service charges before offering.",
+      gHead:"Growth: catalysts vs price", gSub:"Ready-unit price per sq ft · DLD sales",
+      tk:[{n:"89%",b:"Creek Harbour vs Downtown",p:"Same ratio as 2021–23. Mall and metro not priced in."},{n:"+59%",b:"Dubai South off-plan premium",p:"Ready flats yield ~6.9% with the same airport upside."},{n:"+47–72%",b:"Villa growth since 2021–23",p:"Flats +28–49%. Most prime areas dipped in 6 months."}],
+      gcols:["Area","Growth since 2021–23","Last 6 mo","Supply risk","Yield","Read"],
+      momRise:"Rising", momFlat:"Flat", momSoft:"Softening", riskLow:"Low", riskMid:"Medium", riskHigh:"High",
+      offplan:v=>`${v}% off-plan`, thinY:"thin",
+      chartTitle:"Ready apartment price, AED/sq ft", ratioTitle:"Creek Harbour ÷ Downtown",
+      ratioNote:"Moving toward 100% would mean the mall and metro are being priced in.",
+      periods:["Oct 2021–Sep 2023","Oct 2023–Sep 2025","Last 12 months"], periodsShort:["2021–23","2023–25","Last 12 mo"],
+      catTitle:"Catalysts on the calendar", howGrowth:"How growth is measured",
+      methodGrowth:"Ready-only DLD sales as republished on Property Finder's transaction pages, 25 Sep 2026. Periods are derived from rolling 1-, 3- and 5-year averages, assuming transaction weighting. Supply risk: under 35% of sales off-plan = low, 35–65% = medium, over 65% or a pipeline over 10,000 units = high. Past growth and announced projects are signals, not forecasts.",
+      sources:"Sources", disclaim:"Analysis of public listings and DLD data. Not investment advice."
+    },
+    zh:{
+      brand:"迪拜房产地段分析 · 租售比回报助手", stamp:"房源数据 2026年9月25日",
+      hero:"在迪拜买房，<em>哪里收租最划算</em>",
+      ph:"直接问，比如：回报5%以上的四房别墅", ask:"问一下", thinking:"…",
+      tabIncome:"收租回报", tabDeals:"低估好房", tabDistress:"期房急售", tabGrowth:"升值潜力",
+      bedrooms:"户型", minYield:"回报至少", apt:"公寓", house:"别墅/联排", villa:"别墅/联排", any:"不限",
+      bed:b=>b===0?"开间":["","一房","两房","三房","四房","五房"][b], gross:"毛回报", net:"净回报",
+      th:"联排", vi:"独栋",
+      cols:["#","片区","入门回报率","买入价 · 同面积年租金",""],
+      headN:(n,k)=>`收租回报最高的 ${n} 个${k}片区`, headNone:"没找到符合条件的片区",
+      subIncome:(k,m,basis)=>`${k} · ${basis}${m}% 以上 · 从高到低排`,
+      buy:"买入", rent:"年租", yr:"/年", sqft:"尺", netAbout:"净", view:"看房源",
+      heavy:"供应量大", heavyHidden:n=>`已隐藏 <b>${n}</b> 个供应量大的片区 · 点此显示`, heavyShown:"隐藏供应量大的片区",
+      budget:v=>`预算 ≤ <b>${v} 迪拉姆</b> · 清除`, noMatch:"没有片区达到这个回报，把门槛调低一点试试。",
+      unsupported:"暂时没有这部分数据：", unsOther:"目前只有迪拜的数据。", unsScope:"公寓只统计到两房，别墅和联排统计三到五房。",
+      howIncome:"回报率是怎么算的？",
+      methodIncome:"每个片区、每种户型，取 Property Finder 上最便宜的 5 套在售现房，每套配一套同户型、面积差不超过 15%、不带家具、年付的最便宜出租房，取中间那组的回报率。期房、带家具出租和明显的钓鱼低价都排除了。挂牌里别墅和联排标得很乱，所以合并统计。净回报扣掉物业费（公寓每尺 12 迪拉姆，别墅 4 迪拉姆）和 5% 空置。“供应量大”依据：Morgan's 统计 JVC 2025–27 年要交付 16,852 套，Dubai South 光 Azizi Venice 就有 7,860 套；Cavendish Maxwell 统计 Arjan 2027 年前约 9,000 套。以上都是挂牌价，2026 年 9 月 25 日。",
+      dHead:n=>`${n} 套比同楼成交价便宜的现房公寓`,
+      dSub:"挂牌单价对比同一栋楼近期 DLD 成交均价。便宜不等于会涨，每套都标了可能便宜的原因。",
+      sortUp:"升值看点优先", sortDisc:"折扣最大", sortY:"回报最高", below:"低于", bldAvg:"同楼均价", thisUnit:"这套",
+      src:(n,p)=>`${n} 笔 DLD 成交 · ${p==="3y"?"近3年":"近12个月"}`, dYield:"租金回报", dRent:"同类年租",
+      revs:"条住户评价", noRevs:"暂无住户评价",
+      up:{fair:"升值看点：还可以", limited:"升值空间有限", risk:"有隐患，先核实"},
+      flags:{offplan:"期房",fire:"2025年发生火灾",tenanted:"可能带租约",vacant:"空房",partfurn:"部分家具",highfloor:"高楼层",inconsistent:"房源信息前后矛盾",stale:"6月挂到现在",furnished:"带家具",firm:"不议价",thin:"同楼成交少"},
+      howDeals:"低估好房是怎么筛的？",
+      methodDeals:"在 18 个片区里取最便宜的 469 套现房公寓挂牌，每套都和同一栋楼、同户型的 DLD 现房成交均价比（近 12 个月；成交不到 5 笔就用 3 年）。比均价低 10–40%、而且同面积不带家具的出租房能做到 6% 以上回报，才算入选。别墅和联排没放进来，因为挂牌面积把土地和建筑面积混在一起。楼况来自 Property Finder 和 FlatReviews 的住户评价、Khaleej Times 的火灾报道和 Propsearch 的楼盘资料。出价前一定要核实产权、租约、朝向和物业费。",
+      gHead:"升值：利好和价格对比", gSub:"现房每尺成交价 · DLD 数据",
+      tk:[{n:"89%",b:"Creek Harbour 只有 Downtown 的 89%",p:"跟 2021–23 年一样，商场和地铁的利好还没进房价。"},{n:"+59%",b:"Dubai South 期房比现房贵这么多",p:"现房公寓回报约 6.9%，机场利好一样吃得到。"},{n:"+47–72%",b:"别墅 2021–23 年以来的涨幅",p:"公寓只涨了 28–49%。多数热门片区近半年在回调。"}],
+      gcols:["片区","2021–23 年以来涨幅","近半年","供应风险","回报","点评"],
+      momRise:"在涨", momFlat:"横盘", momSoft:"回调", riskLow:"低", riskMid:"中", riskHigh:"高",
+      offplan:v=>`期房占 ${v}%`, thinY:"样本少",
+      chartTitle:"现房公寓成交价（迪拉姆/尺）", ratioTitle:"Creek Harbour ÷ Downtown",
+      ratioNote:"如果往 100% 靠，说明市场开始给商场和地铁定价了。",
+      periods:["2021年10月–2023年9月","2023年10月–2025年9月","近 12 个月"], periodsShort:["2021–23","2023–25","近12个月"],
+      catTitle:"接下来的利好", howGrowth:"涨幅是怎么算的？",
+      methodGrowth:"用的是 Property Finder 交易页转载的 DLD 现房成交，2026 年 9 月 25 日。三个时段由 1 年、3 年、5 年滚动均价倒推，假设按成交量加权。供应风险：期房占成交不到 35% 算低，35–65% 算中，超过 65% 或在建超过 1 万套算高。过去涨得多、项目已公布，只能当参考信号，不是预测。",
+      sources:"来源", disclaim:"根据公开房源和 DLD 数据整理的分析，不构成投资建议。"
+    }
+  };
+  let lang = DEFAULT_LANG === "zh" ? "zh" : "en";
+  try { const s = localStorage.getItem("dya-lang"); if (s === "en" || s === "zh") lang = s; } catch {}
+  const t = k => T[lang][k];
+
+  const COMM = {
+    "jumeirah-village-circle":{n:"Jumeirah Village Circle (JVC)", heavy:"a"}, "jumeirah-village-triangle":{n:"Jumeirah Village Triangle"},
+    "dubai-sports-city":{n:"Dubai Sports City"}, "dubai-silicon-oasis":{n:"Dubai Silicon Oasis"}, "town-square":{n:"Town Square"},
+    "arjan":{n:"Arjan", heavy:"a"}, "international-city":{n:"International City"}, "meydan":{n:"Meydan"}, "greens":{n:"The Greens"},
+    "business-bay":{n:"Business Bay"}, "downtown-dubai":{n:"Downtown Dubai"}, "dubai-creek-harbour-the-lagoons":{n:"Dubai Creek Harbour"},
+    "dubai-south":{n:"Dubai South", heavy:"ah"}, "dubai-marina":{n:"Dubai Marina"}, "jumeirah-lake-towers":{n:"Jumeirah Lake Towers (JLT)"},
+    "motor-city":{n:"Motor City"}, "al-furjan":{n:"Al Furjan"}, "dubai-hills-estate":{n:"Dubai Hills Estate"},
+    "damac-hills-2":{n:"DAMAC Hills 2"}, "villanova":{n:"Villanova"}, "mudon":{n:"Mudon"}, "arabian-ranches-3":{n:"Arabian Ranches 3"},
+    "the-springs":{n:"The Springs"}, "arabian-ranches":{n:"Arabian Ranches"}, "arabian-ranches-2":{n:"Arabian Ranches 2"},
+    "damac-hills":{n:"DAMAC Hills"}, "the-valley":{n:"The Valley"}, "tilal-al-ghaf":{n:"Tilal Al Ghaf"},
+    "jumeirah-golf-estates":{n:"Jumeirah Golf Estates"}, "jumeirah-park":{n:"Jumeirah Park"}, "damac-lagoons":{n:"DAMAC Lagoons"}
+  };
+  const cname = c => (COMM[c] || {n:c}).n;
+
+  const GROWTH = [
+    {id:"downtown", name:"Downtown Dubai", kind:"apt", now:2650, p1:2005, p2:2547, six:-8, off:42, entry:6.0, cats:[],
+      read:{en:"Mature benchmark. Flat for a year; older towers still yield ~6%.", zh:"成熟对标区。近一年持平；老楼回报仍约 6%。"}, re:/downtown|市中心/},
+    {id:"creek", name:"Dubai Creek Harbour", kind:"apt", now:2360, p1:1848, p2:2235, six:-5.3, off:69, entry:5.0,
+      cats:[{en:"Dubai Square ~2028–29",zh:"Dubai Square 约2028–29"},{en:"Blue Line 2029",zh:"蓝线 2029"}],
+      read:{en:"Catalysts ahead, not priced in. Heavy supply and ~5% yield: a patient 3–5 year hold.", zh:"利好在前未反映。供应多、回报约 5%，适合耐心持有 3–5 年。"}, re:/creek|溪港/},
+    {id:"bb", name:"Business Bay", kind:"apt", now:1963, p1:1485, p2:1835, six:-5, off:62, entry:6.7, pipeline:true, cats:[],
+      read:{en:"Steady growth, good yield, but 10,000+ units in the pipeline.", zh:"涨幅稳、回报好，但待交付超过 1 万套。"}, re:/business bay|商业湾/},
+    {id:"south", name:"Dubai South", kind:"apt", now:1039, p1:761, p2:912, six:3.1, off:93, entry:6.9,
+      cats:[{en:"Al Maktoum Airport 2032",zh:"阿勒马克图姆机场 2032"}],
+      read:{en:"Ready flats: ~6.9% yield plus airport upside, still rising. Skip the off-plan premium.", zh:"现房公寓：约 6.9% 回报加机场利好，仍在上涨。避开期房溢价。"}, re:/dubai south|dwc|world central|airport|南区|机场/},
+    {id:"hills", name:"Dubai Hills Estate", kind:"apt", now:2311, p1:1596, p2:2146, six:-5.2, off:61, entry:6.1, cats:[],
+      read:{en:"Strong past growth; lots of new supply, softening.", zh:"过往涨幅强；新供应多，近期走弱。"}, re:/hills/},
+    {id:"marina", name:"Dubai Marina", kind:"apt", now:2050, p1:1436, p2:1777, six:0.4, off:11, entry:7.1, cats:[],
+      read:{en:"Little new supply and holding up.", zh:"新供应少，价格稳住。"}, re:/marina|码头/},
+    {id:"palm", name:"Palm Jumeirah", kind:"apt", now:3089, p1:2216, p2:2743, six:-7.8, off:38, entry:5.8, cats:[],
+      read:{en:"Premium flats; new launches 84% above resale; softening.", zh:"高端公寓；新盘比二手贵 84%；走弱。"}, re:/palm jumeirah|朱美拉棕榈/},
+    {id:"jvc", name:"Jumeirah Village Circle (JVC)", kind:"apt", now:1310, p1:880, p2:1143, six:-8.8, off:64, entry:7.8, pipeline:true, cats:[],
+      read:{en:"Top flat growth and high yield, but the biggest pipeline in Dubai.", zh:"公寓涨幅第一、回报高，但交付量全城最大。"}, re:/jvc|village circle/},
+    {id:"hillsv", name:"Dubai Hills Estate", kind:"villa", now:2300, p1:1334, p2:1981, six:-4.3, off:9, entry:4.6, cats:[],
+      read:{en:"Best growth in the set (+72%) with little new supply.", zh:"涨幅最高（+72%），新供应少。"}, re:/hills/},
+    {id:"palmv", name:"Palm Jumeirah", kind:"villa", now:5695, p1:3371, p2:4571, six:10.2, off:4, entry:null, cats:[],
+      read:{en:"Still rising, almost no new supply; entry price is the barrier.", zh:"仍在上涨，几乎没有新供应；门槛在价格。"}, re:/palm jumeirah|朱美拉棕榈/},
+    {id:"southv", name:"Dubai South", kind:"villa", now:1282, p1:771, p2:1156, six:-6.6, off:70, entry:4.3,
+      cats:[{en:"Al Maktoum Airport 2032",zh:"阿勒马克图姆机场 2032"}],
+      read:{en:"Already up 66%; softening; 70% of sales off-plan.", zh:"已涨 66%；走弱；70% 成交为期房。"}, re:/dubai south|dwc|world central|airport|南区|机场/},
+    {id:"jaliv", name:"Jebel Ali", kind:"villa", now:1638, p1:1113, p2:1515, six:-9.7, off:82, entry:4.0, entryThin:true,
+      cats:[{en:"Airport corridor",zh:"机场走廊"},{en:"Palm Jebel Ali 2030",zh:"杰贝阿里棕榈岛 2030"}],
+      read:{en:"~4% yield, softening, off-plan 53% above resale. Wait for catalysts to firm up.", zh:"回报约 4%，走弱，期房比现房贵 53%。等利好更明确。"}, re:/jebel ali|jabal ali|杰贝阿里/}
+  ];
+  const CATALYSTS = [
+    {when:{en:"2028–29",zh:"2028–29"}, name:{en:"Dubai Square mega-mall",zh:"Dubai Square 超大型商场"}, areas:"Dubai Creek Harbour",
+      note:{en:"Relaunched Nov 2025, AED 180bn, billed larger than Dubai Mall. First announced 2018.",zh:"2025年11月以 1,800 亿迪拉姆重启，宣称比 Dubai Mall 更大。2018 年首次公布。"}},
+    {when:{en:"2028–29",zh:"2028–29"}, name:{en:"Etihad Rail passenger service",zh:"阿提哈德铁路客运"}, areas:"Dubai – Abu Dhabi",
+      note:{en:"About 50 minutes between the cities.",zh:"两地约 50 分钟。"}},
+    {when:{en:"Sep 2029",zh:"2029年9月"}, name:{en:"Metro Blue Line",zh:"地铁蓝线"}, areas:"Creek Harbour · Festival City · Intl City · Silicon Oasis",
+      note:{en:"30 km, 14 stations; approved Nov 2023.",zh:"30 公里，14 站；2023年11月批准。"}},
+    {when:{en:"Sep 2030",zh:"2030年9月"}, name:{en:"Palm Jebel Ali",zh:"杰贝阿里棕榈岛"}, areas:"Jebel Ali",
+      note:{en:"Off-plan only: 408 sales in 12 months at ~AED 3,528/sq ft.",zh:"目前仅期房：12 个月成交 408 套，约每平方英尺 3,528 迪拉姆。"}},
+    {when:{en:"By 2032",zh:"2032 年前"}, name:{en:"Al Maktoum Airport phase 1",zh:"阿勒马克图姆机场一期"}, areas:"Dubai South · Jebel Ali",
+      note:{en:"About $35bn; 150m passengers at phase 1.",zh:"约 350 亿美元；一期年客流 1.5 亿。"}},
+    {when:{en:"Not set",zh:"未定"}, name:{en:"Dubai Creek Tower",zh:"迪拜溪港塔"}, areas:"Dubai Creek Harbour",
+      note:{en:"Redesigned; tender expected early 2026.",zh:"已重新设计；招标原定 2026 年初。"}}
+  ];
+  const SOURCES = [
+    ["Property Finder transactions","https://www.propertyfinder.ae/en/transactions/buy/dubai/dubai-creek-harbour-the-lagoons"],
+    ["Khaleej Times – Dubai Square","https://www.khaleejtimes.com/business/dubai-square-mall-to-open-in-three-years"],
+    ["Gulf Business – Dubai Square 2018","https://gulfbusiness.com/en/2018/retail/dubai-holding-emaar-launch-new-tech-driven-mall-nearly-double-size-dubai-mall/"],
+    ["LYM – Blue Line","https://www.lymrealestate.com/investments/dubai-metro-blue-line-real-estate-impact"],
+    ["Real Estate Club Dubai – megaprojects","https://realestateclubdubai.com/blog/market-analysis/dubai-megaprojects-2026-2030-al-maktoum-airport-therme-property-impact"],
+    ["The National – Palm Jebel Ali","https://www.thenationalnews.com/business/property/2026/06/24/nakheel-launches-222-homes-for-sale-at-palm-jebel-ali-with-prices-from-dh27m/"],
+    ["Morgan's – supply outlook","https://www.morgansrealty.com/blogs/view/dubais-real-estate-market-holds-for-now-but-2027-will-test-its-limits"]
+  ];
+
+  const DSOURCES = [
+    ["Khaleej Times – Tiger Tower repairs","https://www.khaleejtimes.com/uae/tiger-tower-fire-6-months-owners-timeline-repairs-insurance-payouts"],
+    ["Property Finder – Marina Pinnacle reviews","https://www.propertyfinder.ae/en/building-reviews/dubai/dubai-marina-marina-pinnacle.html"],
+    ["Property Finder – The Signature reviews","https://www.propertyfinder.ae/en/building-reviews/dubai/downtown-dubai-burj-khalifa-area-damac-maison-dubai-mall-street-the-signature.html"],
+    ["FlatReviews – Ontario Tower","https://flatreviews.com/dubai/reviews/4405/ontario-tower-resident-reviews"],
+    ["Propsearch – The Bridge","https://propsearch.ae/dubai/the-bridge"],
+    ["Propsearch – Aykon City","https://propsearch.ae/dubai/aykon-city"],
+    ["Mint Real Estate – Azizi Riviera","https://www.mintreal.estate/blogs/azizi-district-dubai-review"]
+  ];
+  // helpers
+  const $ = id => document.getElementById(id);
+  const fmt = n => Math.round(n).toLocaleString("en-US");
+  const short = n => n >= 1e6 ? (n/1e6).toFixed(n >= 1e7 ? 1 : 2).replace(/\.?0+$/,"") + "M" : Math.round(n/1e3) + "k";
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const pct = (v,d=1) => (v>0?"+":"") + v.toFixed(d) + "%";
+  const tone = y => y >= 7.5 ? "good" : y >= 6 ? "mid" : y >= 5 ? "mid" : "bad";
+  const toneK = (y, kind) => kind === "h" ? (y >= 5.25 ? "good" : y >= 4.5 ? "mid" : "bad") : (y >= 7.5 ? "good" : y >= 6 ? "mid" : "bad");
+  const buyUrl = id => `${PF}/en/plp/buy/${id}.html`, rentUrl = id => `${PF}/en/plp/rent/${id}.html`;
+
+  // rows: [c, 'a'|'h', bed, nPairs, entry, nSale, pair[8], type?]
+  const SC = {a:12, h:4};
+  const ALL = ROWS.map(r => { const [c,k,b,n,e,nS,p,ty] = r; const net = e - SC[k]*p[1]/p[0]*100 - e*0.05;
+    return {c,k,b,n,gross:e,net:+net.toFixed(2),nS,p,ty,name:cname(c),heavy:((COMM[c]||{}).heavy||"").includes(k)}; });
+
+  const MINS = {a:[5,6,7], h:[4,4.5,5]};
+  const DEF = {k:"a", beds:"any", min:6, basis:"gross", hideHeavy:false, budget:null, count:10};
+  let S = {...DEF}, focus = [], unsupported = null, sortBy = "up";
+  let G = {kind:"apt", focus:[]};
+  let distressSort = "disc";
+
+  function renderIncome(){
+    const key = S.basis;
+    const pool = ALL.filter(r => r.k === S.k && (S.beds === "any" || r.b === +S.beds));
+    let pass = pool.filter(r => r[key] >= S.min).sort((a,b) => b[key]-a[key]);
+    if (S.budget) pass = pass.filter(r => r.p[0] <= S.budget);
+    const hidden = S.hideHeavy ? pass.filter(r => r.heavy) : [];
+    let kept = S.hideHeavy ? pass.filter(r => !r.heavy) : pass;
+    if (S.beds === "any"){ const seen = new Set(); kept = kept.filter(r => seen.has(r.c) ? false : (seen.add(r.c), true)); }
+    const hiddenAreas = [...new Set(hidden.map(r => r.c))].filter(c => !kept.some(r => r.c === c));
+    const shown = kept.slice(0, S.count);
+    const kindWord = S.k === "h" ? t("house") : t("apt");
+
+    $("aHead").textContent = shown.length ? t("headN")(shown.length, lang==="en" ? (S.k==="h" ? "villa & townhouse" : "apartment") : kindWord) : t("headNone");
+    $("aSub").textContent = t("subIncome")(kindWord + (S.beds !== "any" ? " · " + t("bed")(+S.beds) : ""), S.min, key === "net" ? t("net") : t("gross"));
+    const note = $("aNote"); note.hidden = !unsupported; if (unsupported) note.textContent = t("unsupported") + " " + unsupported;
+
+    const box = $("list");
+    const head = `<div class="lh">${t("cols").map(x => `<span>${esc(x)}</span>`).join("")}</div>`;
+    if (!shown.length){ box.innerHTML = head + `<div class="empty">${esc(t("noMatch"))}</div>`; }
+    else box.innerHTML = head + shown.map((r,i) => {
+      const y = r[key], tn = toneK(y, r.k), p = r.p;
+      const unit = t("bed")(r.b) + (r.k==="h" && r.ty ? " · " + (r.ty==="th" ? t("th") : t("vi")) : "");
+      const isF = focus.some(f => f.test(r.name.toLowerCase()));
+      return `<div class="lr${isF?" focus":""}">
+        <span class="rk">${String(i+1).padStart(2,"0")}</span>
+        <div class="nm"><b>${esc(r.name)}</b><span>${esc(unit)}</span>${r.heavy ? `<div class="flags"><span class="tag t-bad">${esc(t("heavy"))}</span></div>` : ""}</div>
+        <div class="yl"><div class="top"><span class="big" style="color:var(--${tn})">${y.toFixed(1)}%</span><span class="net">${key==="gross" ? esc(t("netAbout"))+" "+r.net.toFixed(1)+"%" : esc(t("gross"))+" "+r.gross.toFixed(1)+"%"}</span></div>
+          <div class="meter"><i class="m-${tn}" style="width:${Math.min(100, y/10*100).toFixed(0)}%"></i></div></div>
+        <dl class="px">
+          <dt>${esc(t("buy"))}</dt><dd><span class="num">AED ${short(p[0])}</span> <small>${fmt(p[1])} ${esc(t("sqft"))} · <a href="${buyUrl(p[3])}" target="_blank" rel="noopener">${esc(p[2])}</a></small></dd>
+          <dt>${esc(t("rent"))}</dt><dd><span class="num">AED ${short(p[4])}</span><small>${esc(t("yr"))} · ${fmt(p[5])} ${esc(t("sqft"))} · <a href="${rentUrl(p[7])}" target="_blank" rel="noopener">${esc(p[6])}</a></small></dd>
+        </dl>
+        <div class="act"><a class="go" href="${buyUrl(p[3])}" target="_blank" rel="noopener">${esc(t("view"))} ↗</a></div>
+      </div>`; }).join("");
+
+    const hb = $("heavyBtn");
+    if (S.hideHeavy && hiddenAreas.length){ hb.hidden = false; hb.innerHTML = t("heavyHidden")(hiddenAreas.length); }
+    else hb.hidden = true;
+    const bb = $("budgetBtn"); bb.hidden = !S.budget; if (S.budget) bb.innerHTML = t("budget")(fmt(S.budget));
+
+    setSeg("segKind", S.k === "h" ? "house" : "apt"); setSeg("segBasis", S.basis);
+    const beds = S.k === "h" ? ["any",3,4,5] : ["any",0,1,2];
+    $("segBeds").innerHTML = beds.map(v => `<button type="button" data-v="${v}">${esc(v==="any" ? t("any") : t("bed")(v))}</button>`).join(""); setSeg("segBeds", String(S.beds));
+    $("segMin").innerHTML = MINS[S.k].map(v => `<button type="button" data-v="${v}">${v}%+</button>`).join(""); setSeg("segMin", String(S.min));
+  }
+  function setSeg(id, v){ $(id).querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === String(v))); }
+
+  function renderDeals(){
+    const UPR = {fair:0, limited:1, risk:2};
+    const list = [...DEALS].sort((a,b) => sortBy === "y" ? b.y - a.y : sortBy === "disc" ? b.disc - a.disc : (UPR[a.up]-UPR[b.up]) || (b.disc - a.disc));
+    $("dHead").textContent = t("dHead")(DEALS.length);
+    $("dealCount").textContent = DEALS.length;
+    const F = t("flags"), goodF = new Set(["vacant","highfloor"]), badF = new Set(["fire","offplan"]), UP = t("up");
+    $("deals").innerHTML = list.map(d => {
+      const psf = d.price / d.size, mx = Math.max(psf, d.avg);
+      return `<article class="deal">
+        <div class="d-top"><div><div class="d-eye">${esc(cname(d.c))} · ${esc(t("bed")(d.bed))}</div><div class="d-name">${esc(d.b)}</div></div>
+          <div class="disc">−${d.disc.toFixed(0)}%<small>${esc(t("below"))} ${esc(lang==="en"?"avg":"均价")}</small></div></div>
+        <div class="d-price"><span class="num">AED ${fmt(d.price)}</span><span>${fmt(d.size)} ${esc(t("sqft"))}</span></div>
+        <div class="cmp">
+          <div class="row"><span>${esc(t("thisUnit"))}</span><span class="bar"><i class="b-this" style="width:${(psf/mx*100).toFixed(0)}%"></i></span><span class="num">${fmt(psf)}</span></div>
+          <div class="row"><span>${esc(t("bldAvg"))}</span><span class="bar"><i class="b-avg" style="width:${(d.avg/mx*100).toFixed(0)}%"></i></span><span class="num">${fmt(d.avg)}</span></div>
+          <div class="src">AED/${esc(t("sqft"))} · ${esc(t("src")(d.n, d.per))}</div>
+        </div>
+        <div class="d-stats"><div><b style="color:var(--${d.y>=7?"good":"ink"})">${d.y.toFixed(1)}%</b><span>${esc(t("dYield"))}</span></div><div><b>${short(d.rent)}</b><span>${esc(t("dRent"))}${esc(t("yr"))} · ${esc(d.rentBld)}</span></div></div>
+        <div class="bchk">
+          <div class="bchk-top"><span class="tag ${d.up==="fair" ? "t-good" : d.up==="limited" ? "t-mid" : "t-bad"}">${esc(UP[d.up])}</span>
+            <span class="stars">${d.rs ? `★ ${d.rs.toFixed(1)}<small> · ${d.rn} ${esc(t("revs"))} · ${esc(d.rsrc)}</small>` : `<small>${esc(t("noRevs"))}</small>`}</span></div>
+          <p>${esc(d.note[lang])}</p>
+        </div>
+        <div class="d-foot"><div class="flags">${d.flags.map(f => `<span class="tag ${goodF.has(f) ? "t-acc" : badF.has(f) ? "t-bad" : "t-mid"}">${esc(F[f])}</span>`).join("")}</div>
+          <a class="go" href="${PF}${d.path}" target="_blank" rel="noopener">${esc(t("view"))} ↗</a></div>
+      </article>`; }).join("");
+    setSeg("segSort", sortBy);
+  }
+
+  function renderDistress(){
+    $("distressTitle").textContent = t("distressTitle");
+    $("distressSub").textContent = t("distressSub");
+    $("distressCount").textContent = "78";
+    const arr = [...DISTRESS_DEALS].sort((a,b) => distressSort === "price" ? (a.price-b.price || b.disc-a.disc) : (b.disc-a.disc || a.price-b.price));
+    $("distressDeals").innerHTML = arr.map(d => {
+      const psf = d.price/d.size;
+      const original = d.original;
+      const save = original-d.price;
+      const bedLabel = t("bed")(d.bed);
+      return `<article class="distress-card">
+        <div class="d-top"><div><div class="d-eye">${esc(cname(d.area))} · ${esc(bedLabel)}</div><div class="d-name">${esc(d.name)}</div></div>
+          <div class="disc">−${d.disc.toFixed(1)}%<small>${esc(lang==="en"?"from original":"较原价")}</small></div></div>
+        <div class="d-price"><span class="num">AED ${fmt(d.price)}</span><span>${fmt(d.size)} ${esc(t("sqft"))}</span></div>
+        <div class="distress-original">${lang==="en"?"Original + DLD 4%":"原价 + DLD 4%"}: AED ${fmt(original)} · ${lang==="en"?"saving":"节省"} AED ${fmt(save)}</div>
+        <div class="distress-detail">
+          <div><span>${lang==="en"?"Developer":"开发商"}</span><b>${esc(d.developer)}</b></div>
+          <div><span>${lang==="en"?"Handover":"交付"}</span><b>${esc(d.hand)}</b></div>
+          <div><span>${lang==="en"?"View":"景观"}</span><b>${esc(d.view)}</b></div>
+          <div><span>${esc(t("sqft"))} / AED</span><b>${fmt(psf)} / sq ft</b></div>
+        </div>
+        ${d.plot ? `<div class="distress-meta"><span class="tag t-neu">${lang==="en"?"Plot":"地块"} ${fmt(d.plot)} sq ft</span><span class="tag t-acc">${esc(d.hand)}</span></div>` : `<div class="distress-meta"><span class="tag t-acc">${esc(d.hand)}</span></div>`}
+        <div class="d-foot"><div class="flags"><span class="tag t-brass">DistressStock</span><span class="tag t-neu">${esc(d.date)}</span></div>
+          <a class="go" href="${esc(d.url)}" target="_blank" rel="noopener">${esc(t("view"))} ↗</a></div>
+      </article>`;
+    }).join("");
+  }
+
+
+  const growthOf = r => (r.now / r.p1 - 1) * 100;
+  const mom = v => v > 1 ? ["t-good", t("momRise"), "▲"] : v >= -4 ? ["t-neu", t("momFlat"), "▬"] : ["t-bad", t("momSoft"), "▼"];
+  const risk = r => (r.off > 65 || r.pipeline) ? ["t-bad", t("riskHigh")] : r.off >= 35 ? ["t-mid", t("riskMid")] : ["t-good", t("riskLow")];
+  function renderGrowth(){
+    const rows = GROWTH.filter(r => r.kind === G.kind).sort((a,b) => growthOf(b) - growthOf(a));
+    const maxG = Math.max(...GROWTH.map(growthOf)), c = t("gcols");
+    $("sh").innerHTML = c.map(x => `<span>${esc(x)}</span>`).join("");
+    $("srows").innerHTML = rows.map(r => {
+      const g = growthOf(r), [mc, mt, ma] = mom(r.six), [rc, rt] = risk(r);
+      return `<div class="sr${G.focus.includes(r.id) ? " focus" : ""}">
+        <div class="nm s-name"><b>${esc(r.name)}</b><span class="num" style="font-size:12.5px;color:var(--muted)">AED ${fmt(r.now)}/${esc(t("sqft"))}</span></div>
+        <div class="gbar"><div class="meter"><i style="width:${Math.max(4, g/maxG*100).toFixed(0)}%;background:var(--accent)"></i></div><b>${pct(g,0)}</b></div>
+        <div class="cell"><span class="lab">${esc(c[2])}</span><span class="tag ${mc}">${ma} ${esc(mt)}</span><small class="num">${pct(r.six)}</small></div>
+        <div class="cell"><span class="lab">${esc(c[3])}</span><span class="tag ${rc}">${esc(rt)}</span><small>${esc(t("offplan")(r.off))}</small></div>
+        <div class="cell"><span class="lab">${esc(c[4])}</span><span class="num" style="font-weight:600">${r.entry ? r.entry.toFixed(1)+"%" : "—"}</span>${r.entryThin ? `<small>${esc(t("thinY"))}</small>` : ""}</div>
+        <div class="read">${esc(r.read[lang])}${r.cats.length ? `<div class="cats">${r.cats.map(x => `<span class="tag t-brass">${esc(x[lang])}</span>`).join("")}</div>` : ""}</div>
+      </div>`; }).join("");
+    setSeg("segGKind", G.kind);
+    $("gHead").textContent = t("gHead"); $("gSub").textContent = t("gSub");
+    $("tks").innerHTML = t("tk").map(x => `<div class="tk"><span class="n">${esc(x.n)}</span><b>${esc(x.b)}</b><p>${esc(x.p)}</p></div>`).join("");
+    const cr = GROWTH.find(r => r.id==="creek"), dt = GROWTH.find(r => r.id==="downtown");
+    $("ratioSteps").innerHTML = [cr.p1/dt.p1, cr.p2/dt.p2, cr.now/dt.now].map(x => `<span>${Math.round(x*100)}%</span>`).join("<i>→</i>");
+    $("ratioLbl").textContent = t("periodsShort").join("  →  ");
+    $("timeline").innerHTML = CATALYSTS.map(x => `<div class="tl"><span class="when">${esc(x.when[lang])}</span><b>${esc(x.name[lang])}</b><span class="ar">${esc(x.areas)}</span><p>${esc(x.note[lang])}</p></div>`).join("");
+    drawChart();
+  }
+  function drawChart(){
+    const ids = ["downtown","creek","bb","south"], cols = ["var(--s1)","var(--s2)","var(--s3)","var(--s4)"];
+    const svg = $("gChart"), W = 600, H = 280, m = {l:52, r:118, t:14, b:32};
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("aria-label", t("chartTitle"));
+    const ser = ids.map(id => GROWTH.find(r => r.id === id));
+    const x = i => m.l + i*(W-m.l-m.r)/2, y = v => m.t + (1 - v/3000)*(H-m.t-m.b);
+    let g = "";
+    for (let v = 0; v <= 3000; v += 1000) g += `<line x1="${m.l}" x2="${W-m.r}" y1="${y(v)}" y2="${y(v)}" class="grid"/><text x="${m.l-8}" y="${y(v)+4}" class="ax" text-anchor="end">${fmt(v)}</text>`;
+    t("periodsShort").forEach((p,i) => g += `<text x="${x(i)}" y="${H-10}" class="ax" text-anchor="middle">${esc(p)}</text>`);
+    const used = [];
+    ser.forEach((r, si) => {
+      const v = [r.p1, r.p2, r.now];
+      g += `<polyline fill="none" stroke="${cols[si]}" stroke-width="2.25" stroke-linejoin="round" points="${v.map((a,i)=>`${x(i)},${y(a)}`).join(" ")}"/>`;
+      v.forEach((a,i) => g += `<circle cx="${x(i)}" cy="${y(a)}" r="${i===2?5:3.5}" fill="${cols[si]}" stroke="var(--panel)" stroke-width="2"/><circle cx="${x(i)}" cy="${y(a)}" r="14" fill="transparent" class="hit" data-s="${si}" data-i="${i}"/>`);
+      let ly = y(r.now)+4; used.forEach(u => { if (Math.abs(u-ly) < 14) ly = u+14; }); used.push(ly);
+      g += `<text x="${x(2)+12}" y="${ly}" class="lbl">${esc(r.name.replace("Dubai Creek Harbour","Creek Harbour").replace("Downtown Dubai","Downtown"))}</text>`;
+    });
+    svg.innerHTML = g;
+    const tip = $("gTip");
+    svg.querySelectorAll(".hit").forEach(h => {
+      h.addEventListener("mouseenter", () => { const r = ser[+h.dataset.s], i = +h.dataset.i, v = [r.p1,r.p2,r.now][i]; tip.innerHTML = `<b>${esc(r.name)}</b><br>${esc(t("periods")[i])}: AED ${fmt(v)}/${esc(t("sqft"))}`; const sc = svg.getBoundingClientRect().width / W; tip.style.left = Math.min(x(i)*sc+12, svg.getBoundingClientRect().width-190)+"px"; tip.style.top = (y(v)*sc-10)+"px"; tip.hidden = false; });
+      h.addEventListener("mouseleave", () => tip.hidden = true);
+    });
+  }
+
+  function applyLang(){
+    document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+    document.querySelectorAll("[data-t]").forEach(el => { const v = t(el.dataset.t); if (typeof v === "string") el.textContent = v; });
+    $("heroTitle").innerHTML = t("hero");
+    $("langEn").setAttribute("aria-pressed", lang==="en"); $("langZh").setAttribute("aria-pressed", lang==="zh");
+    $("segKind").querySelector('[data-v="apt"]').textContent = t("apt"); $("segKind").querySelector('[data-v="house"]').textContent = t("house");
+    $("segGKind").querySelector('[data-v="apt"]').textContent = t("apt"); $("segGKind").querySelector('[data-v="villa"]').textContent = t("villa");
+    $("segBasis").querySelector('[data-v="gross"]').textContent = t("gross"); $("segBasis").querySelector('[data-v="net"]').textContent = t("net");
+    $("segSort").querySelector('[data-v="up"]').textContent = t("sortUp"); $("segSort").querySelector('[data-v="disc"]').textContent = t("sortDisc"); $("segSort").querySelector('[data-v="y"]').textContent = t("sortY");
+    $("segDistressSort").querySelector('[data-v="disc"]').textContent = t("distressSortDisc"); $("segDistressSort").querySelector('[data-v="price"]').textContent = t("distressSortPrice");
+    $("q").placeholder = t("ph"); $("q").setAttribute("aria-label", t("ph"));
+    $("askBtn").textContent = t("ask");
+    $("methodIncome").textContent = t("methodIncome"); $("methodDeals").textContent = t("methodDeals"); $("methodGrowth").textContent = t("methodGrowth");
+    $("distressTitle").textContent = t("distressTitle"); $("distressSub").textContent = t("distressSub");
+    $("sourcesDeals").innerHTML = esc(t("sources")) + ": " + DSOURCES.map(([n,u]) => `<a href="${u}" target="_blank" rel="noopener">${esc(n)}</a>`).join(" · ");
+    $("sourcesGrowth").innerHTML = esc(t("sources")) + ": " + SOURCES.map(([n,u]) => `<a href="${u}" target="_blank" rel="noopener">${esc(n)}</a>`).join(" · ");
+    renderIncome(); renderDeals(); renderDistress(); renderGrowth();
+  }
+  function setLang(l){ lang = l; try { localStorage.setItem("dya-lang", l); } catch {} applyLang(); }
+
+  // parser
+  const NUM = {"一":1,"两":2,"二":2,"三":3,"四":4,"五":5,"六":6,"七":7,"八":8,"九":9,"十":10,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10};
+  const toNum = v => NUM[v] || parseInt(v,10);
+  const GROWTH_RE = /apprec|capital|growth|grow|upside|catalyst|long[- ]term|future value|升值|增值|潜力|资本利得|长期|涨幅/;
+  const DEAL_RE = /deal|undervalu|under[- ]valued|bargain|below market|discount|steal|低估|捡漏|折扣|好房|特价|低于市场/;
+  function parse(q){
+    const s = q.toLowerCase();
+    const f = {type:null, bedrooms:"any", minYield:null, count:null, excludeOversupplied:false, basis:"gross", maxBudget:null, unsupported:null};
+    if (/villa|townhouse|town house|联排|别墅|排屋/.test(s)) f.type = "house";
+    if (/apartment|flat|公寓/.test(s)) f.type = f.type || "apartment";
+    if (/studio|开间|单间/.test(s)) f.bedrooms = "studio";
+    const bd = s.match(/([1-9一二两三四五六])\s*(?:房|室|居|卧)/) || s.match(/\b([1-9]|one|two|three|four|five|six)[\s-]*(?:bed|br|bhk|bedroom)/); if (bd) f.bedrooms = String(toNum(bd[1]));
+    const pc = s.match(/(\d+(?:\.\d+)?)\s*%/); if (pc) f.minYield = parseFloat(pc[1]);
+    const cn = s.match(/(\d{1,2}|[一二两三四五六七八九十])\s*个/) || s.match(/\b(\d{1,2}|one|two|three|four|five|six|seven|eight|nine|ten)\s+(?:areas|communities|places|options|picks)/) || s.match(/(?:top|前)\s*(\d{1,2})/); if (cn) f.count = toNum(cn[1]);
+    if (/oversupp|supply|pipeline|供应|过剩|供过于求/.test(s)) f.excludeOversupplied = true;
+    if (/\bnet\b|after (service|costs|fees)|净|扣除/.test(s)) f.basis = "net";
+    const bu = s.match(/(\d+(?:\.\d+)?)\s*(万|百万|k|m)?\s*(?:迪拉姆|aed)?\s*(?:以下|以内)/) || s.match(/(?:under|below|max|less than|budget(?: of)?|低于|不超过|预算)\s*(?:aed\s*)?([\d.,]+)\s*(万|百万|k|m|million)?/);
+    if (bu){ let v = parseFloat(bu[1].replace(/,/g,"")); const u = bu[2]; if (u==="万") v*=1e4; else if (u==="百万"||u==="m"||u==="million") v*=1e6; else if (u==="k") v*=1e3; if (v > 50000) f.maxBudget = v; }
+    if (/abu dhabi|sharjah|ajman|阿布扎比|沙迦/.test(s)) f.unsupported = t("unsOther");
+    return f;
+  }
+  function apply(f){
+    let b = String(f.bedrooms ?? "any"); if (b === "studio") b = "0";
+    let k = f.type === "house" || f.type === "townhouse" ? "h" : f.type === "apartment" ? "a" : (+b >= 3 ? "h" : "a");
+    let uns = typeof f.unsupported === "string" && f.unsupported.trim() ? f.unsupported.trim() : null;
+    if (b !== "any"){ const ok = k === "h" ? ["3","4","5"] : ["0","1","2"]; if (!ok.includes(b)){ uns = uns || t("unsScope"); b = "any"; } }
+    const mins = MINS[k]; const my = Number.isFinite(+f.minYield) && f.minYield !== null ? +f.minYield : (k === "h" ? 4 : 6);
+    const min = [...mins].reverse().find(v => my >= v) ?? mins[0];
+    S = {...DEF, k, beds:b, min, basis: f.basis === "net" ? "net" : "gross", hideHeavy: !!f.excludeOversupplied,
+      budget: Number.isFinite(+f.maxBudget) && f.maxBudget ? Math.round(+f.maxBudget) : null,
+      count: Number.isFinite(+f.count) && f.count ? Math.max(1, Math.min(15, Math.round(+f.count))) : DEF.count};
+    unsupported = uns;
+    focus = GROWTH.filter(r => r.re.test(($("q").value||"").toLowerCase())).map(r => r.re);
+    renderIncome(); setView("income");
+  }
+  function routeGrowth(q){
+    const s = q.toLowerCase();
+    G.focus = GROWTH.filter(r => r.re.test(s)).map(r => r.id);
+    G.kind = /villa|townhouse|别墅|联排/.test(s) ? "villa" : "apt";
+    if (G.focus.length && !GROWTH.some(r => G.focus.includes(r.id) && r.kind === G.kind)) G.kind = G.kind === "apt" ? "villa" : "apt";
+    renderGrowth(); setView("growth");
+  }
+  function setView(v){
+    ["income","deals","distress","growth"].forEach(n => { const on = n === v, id = n[0].toUpperCase()+n.slice(1); $("view"+id).hidden = !on; $("tab"+id).setAttribute("aria-selected", on); });
+    try { history.replaceState(null, "", v === "income" ? location.pathname + location.search : "#" + v); } catch {}
+  }
+
+  // Claude (optional, silent fallback)
+  let sample = null;
+  (async () => { try { sample = window.claude && window.claude.use ? await window.claude.use("sample") : null; } catch { sample = null; } })();
+  const prompt = q => `You turn a property investor's question (English or Chinese) into filters over Dubai listing data: ready apartments (studio, 1, 2 bed) and villas/townhouses (3, 4, 5 bed) with an entry rental yield per community, a list of undervalued apartment listings, and a growth view. Reply with only one JSON object:
+{"view":"income"|"growth"|"deals"|"distress","type":"apartment"|"house"|null,"bedrooms":"any"|"studio"|"1"|"2"|"3"|"4"|"5","minYield":number|null,"count":integer|null,"excludeOversupplied":boolean,"basis":"gross"|"net","maxBudget":number|null,"unsupported":string|null}
+Rules: view "distress" for off-plan distressed deals, urgent sales and steep discounts (期房急售, 折价); view "growth" for capital appreciation, upside, catalysts, long-term value (升值, 潜力); "deals" for undervalued, bargains, below-market listings (低估, 捡漏, 好房); else "income". ROI/return/回报率 = rental yield. Villas and townhouses (别墅, 联排) = "house". 开间 = studio, 一房 = "1", 两房 = "2", 四房 = "4". Use "net" only if net (净), costs or fees are mentioned. maxBudget is AED (万 = 10,000). excludeOversupplied true if oversupply/supply/pipeline mentioned. "unsupported": under 15 words in ${lang==="zh"?"Simplified Chinese":"English"} for anything this data cannot answer (other emirates, schools, 6+ bedrooms), else null.
+Question: ${q}`;
+  let ctl = null;
+  async function ask(q){
+    q = q.trim(); if (!q) return;
+    const s = q.toLowerCase();
+    const local = () => /distress|distressed|急售|折价|期房折扣|期房急售/.test(s) ? setView("distress") : DEAL_RE.test(s) ? setView("deals") : GROWTH_RE.test(s) ? routeGrowth(q) : apply(parse(q));
+    if (!sample){ local(); return; }
+    ctl?.abort(); ctl = new AbortController();
+    const btn = $("askBtn"); btn.disabled = true; btn.textContent = t("thinking");
+    try {
+      const f = await sample.json(prompt(q), {modelTier:"quick", signal:ctl.signal});
+      if (!f || typeof f !== "object") throw {code:"invalid_json"};
+      if (f.view === "growth") routeGrowth(q); else if (f.view === "deals") setView("deals"); else if (f.view === "distress") setView("distress"); else apply(f);
+    } catch (e) {
+      if (e && e.code === "cancelled") return;
+      if (e && ["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed"].includes(e.code)) sample = null;
+      local();
+    } finally { btn.disabled = false; btn.textContent = t("ask"); }
+  }
+
+  // events
+  $("askForm").addEventListener("submit", e => { e.preventDefault(); ask($("q").value); });
+  $("langEn").addEventListener("click", () => setLang("en"));
+  $("langZh").addEventListener("click", () => setLang("zh"));
+  $("tabIncome").addEventListener("click", () => setView("income"));
+  $("tabDeals").addEventListener("click", () => setView("deals"));
+  $("tabDistress").addEventListener("click", () => setView("distress"));
+  $("tabGrowth").addEventListener("click", () => setView("growth"));
+  const seg = (id, fn) => $(id).addEventListener("click", e => { const b = e.target.closest("button"); if (b && b.dataset.v !== undefined) fn(b.dataset.v); });
+  seg("segDistressSort", v => { distressSort = v; renderDistress(); setSeg("segDistressSort", distressSort); });
+  seg("segKind", v => { const k = v === "house" ? "h" : "a"; if (S.k === k) return; S.k = k; S.beds = "any"; S.min = k === "h" ? 4 : 6; unsupported = null; renderIncome(); });
+  seg("segBeds", v => { S.beds = v; renderIncome(); });
+  seg("segMin", v => { S.min = +v; renderIncome(); });
+  seg("segBasis", v => { S.basis = v; renderIncome(); });
+  seg("segSort", v => { sortBy = v; renderDeals(); });
+  seg("segGKind", v => { G.kind = v; renderGrowth(); });
+  $("heavyBtn").addEventListener("click", () => { S.hideHeavy = !S.hideHeavy; renderIncome(); });
+  $("budgetBtn").addEventListener("click", () => { S.budget = null; renderIncome(); });
+
+  applyLang();
+  renderDistress();
+  const h = (location.hash || "").slice(1);
+  setView(["deals","distress","growth"].includes(h) ? h : "income");
+})();
+</script>
+
+</body></html>
